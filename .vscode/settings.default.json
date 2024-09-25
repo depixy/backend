@@ -1,0 +1,5 @@
+{
+  "eslint.useFlatConfig": true,
+  "cSpell.words": ["depixy"],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
+}

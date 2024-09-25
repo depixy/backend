@@ -1,0 +1,35 @@
+{
+  "name": "@depixy/template",
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "test": "cross-env NODE_OPTIONS=--enable-source-maps mocha",
+    "lint": "eslint"
+  },
+  "author": "Joshua Avalon",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/depixy/template-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/depixy/template-js/issues"
+  },
+  "homepage": "https://github.com/depixy/template-js#readme",
+  "devDependencies": {
+    "@joshuaavalon/eslint-config-typescript": "^8.1.7",
+    "@types/chai": "^4.3.14",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.28",
+    "chai": "^5.1.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.9.1",
+    "globals": "^15.8.0",
+    "mocha": "^10.4.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.4.2"
+  }
+}
