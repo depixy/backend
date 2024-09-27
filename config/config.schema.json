@@ -1,0 +1,121 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://raw.githubusercontent.com/depixy/backend/refs/heads/master/config/config.schema.json",
+  "title": "Depixy Backend Configuration",
+  "type": "object",
+  "properties": {
+    "logging": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "title": "Log Level",
+          "description": "See https://github.com/depixy/backend/blob/master/src/config/README.md",
+          "anyOf": [
+            {
+              "const": "trace",
+              "type": "string"
+            },
+            {
+              "const": "debug",
+              "type": "string"
+            },
+            {
+              "const": "info",
+              "type": "string"
+            },
+            {
+              "const": "warn",
+              "type": "string"
+            },
+            {
+              "const": "error",
+              "type": "string"
+            },
+            {
+              "const": "fatal",
+              "type": "string"
+            },
+            {
+              "const": "silent",
+              "type": "string"
+            }
+          ]
+        },
+        "content": {
+          "type": "object",
+          "properties": {
+            "request": {
+              "title": "Log Level",
+              "anyOf": [
+                {
+                  "const": "all",
+                  "type": "string"
+                },
+                {
+                  "const": "forbidden",
+                  "type": "string"
+                },
+                {
+                  "const": "error",
+                  "type": "string"
+                },
+                {
+                  "const": "silent",
+                  "type": "string"
+                }
+              ]
+            },
+            "database": {
+              "title": "Log Level",
+              "anyOf": [
+                {
+                  "const": "debug",
+                  "type": "string"
+                },
+                {
+                  "const": "info",
+                  "type": "string"
+                },
+                {
+                  "const": "warn",
+                  "type": "string"
+                },
+                {
+                  "const": "error",
+                  "type": "string"
+                },
+                {
+                  "const": "silent",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "required": [
+            "request",
+            "database"
+          ]
+        }
+      },
+      "required": [
+        "level",
+        "content"
+      ]
+    },
+    "network": {
+      "type": "object",
+      "properties": {
+        "trustProxy": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "trustProxy"
+      ]
+    }
+  },
+  "required": [
+    "logging",
+    "network"
+  ]
+}

@@ -1,7 +1,7 @@
 ---
 name: 🪲 Report a Bug
 about: Does something not work correctly?
-labels: ["➿ needs triage", "🪲 bug"]
+labels: ["➿ needs triage", "🪲 bug", "💾 backend"]
 projects: "depixy/4"
 ---
 
