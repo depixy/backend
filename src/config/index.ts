@@ -21,7 +21,8 @@ export type Config = Static<typeof schema>;
 export async function readConfig(): Promise<Config> {
   const validator = TypeCompiler.Compile(schema);
   if (!validator.Check(config)) {
-    throw InvalidInputError.typebox(validator.Errors(config), "Invalid configuration");
+    const nodeConfigEnv = config.util.getEnv("NODE_CONFIG_ENV");
+    throw InvalidInputError.typebox(validator.Errors(config), `Invalid configuration (${nodeConfigEnv})`);
   }
   return config;
 }
