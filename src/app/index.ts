@@ -4,9 +4,8 @@ import fastify from "fastify";
 import { errorFormatter, errorHandler, notFoundHandler } from "./error.js";
 import { parseQueryString } from "./qs.js";
 
-import type { Config } from "#config";
-
 import type { FastifyInstance, RawRequestDefaultExpression, RawServerBase } from "fastify";
+import type { Config } from "#config";
 
 /**
  * Generate unique request id
