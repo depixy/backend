@@ -1,7 +1,7 @@
-import globals from "globals";
-import typescript from "typescript-eslint";
 import jsConfig from "@joshuaavalon/eslint-config-javascript";
 import tsRules from "@joshuaavalon/eslint-config-typescript";
+import globals from "globals";
+import typescript from "typescript-eslint";
 
 export default [
   { ignores: ["**/node_modules", "**/dist"] },

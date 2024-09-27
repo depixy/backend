@@ -1,7 +1,7 @@
 ---
 name: 🔧 Request a Feature
 about: Do you have a Feature Request?
-labels: ["➿ needs triage", "🎯 enhancement"]
+labels: ["➿ needs triage", "🎯 enhancement", "💾 backend"]
 projects: "depixy/4"
 ---
 
