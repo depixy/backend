@@ -6,3 +6,5 @@ logging:
     database: warn
 network:
   trustProxy: false
+database:
+  url: postgresql://depixy:depixy@db:5432/depixy
