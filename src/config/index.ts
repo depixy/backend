@@ -20,9 +20,10 @@ export type Config = Static<typeof schema>;
 
 export async function readConfig(): Promise<Config> {
   const validator = TypeCompiler.Compile(schema);
-  if (!validator.Check(config)) {
+  const cfg = JSON.parse(JSON.stringify(config, null, 2));
+  if (!validator.Check(cfg)) {
     const nodeConfigEnv = config.util.getEnv("NODE_CONFIG_ENV");
-    throw InvalidInputError.typebox(validator.Errors(config), `Invalid configuration (${nodeConfigEnv})`);
+    throw InvalidInputError.typebox(validator.Errors(cfg), `Invalid configuration (${nodeConfigEnv})`);
   }
-  return config;
+  return cfg;
 }
