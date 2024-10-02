@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import typeboxPlugin from "@joshuaavalon/fastify-plugin-typebox";
 import fastify from "fastify";
+import { databasePlugin } from "#plugins/database";
 import { errorFormatter, errorHandler, notFoundHandler } from "./error.js";
 import { parseQueryString } from "./qs.js";
 
@@ -27,5 +28,6 @@ export async function createApp(cfg: Config): Promise<FastifyInstance> {
     .setErrorHandler(errorHandler)
     .setSchemaErrorFormatter(errorFormatter);
   await app.register(typeboxPlugin);
+  await app.register(databasePlugin, cfg);
   return app;
 }

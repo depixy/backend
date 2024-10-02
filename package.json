@@ -11,7 +11,12 @@
     "preexport:json-schema": "npm run build",
     "export:json-schema": "node dist/config/export.js",
     "test": "cross-env NODE_OPTIONS=--enable-source-maps mocha",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:dev": "prisma migrate dev --name temp",
+    "db:deploy": "prisma migrate deploy",
+    "db:generate": "prisma generate --no-hints",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset --force --skip-generate"
   },
   "author": "Joshua Avalon",
   "license": "Apache-2.0",
@@ -24,11 +29,17 @@
   },
   "homepage": "https://github.com/depixy/backend#readme",
   "imports": {
+    "#app": {
+      "import": "./dist/app/index.js"
+    },
     "#config": {
       "import": "./dist/config/index.js"
     },
     "#error": {
       "import": "./dist/error/index.js"
+    },
+    "#plugins/*": {
+      "import": "./dist/plugins/*/index.js"
     },
     "#utils": {
       "import": "./dist/utils/index.js"
@@ -41,7 +52,7 @@
     }
   },
   "devDependencies": {
-    "@joshuaavalon/eslint-config-typescript": "^8.2.1",
+    "@joshuaavalon/eslint-config-typescript": "^8.2.2",
     "@types/chai": "^4.3.14",
     "@types/config": "^3.3.5",
     "@types/mocha": "^10.0.6",

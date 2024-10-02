@@ -2,12 +2,14 @@ import { Type } from "@sinclair/typebox";
 import { TypeCompiler } from "@sinclair/typebox/compiler";
 import config from "config";
 import { InvalidInputError } from "#error";
+import { database } from "./database.js";
 import { logging } from "./logging.js";
-
 import { network } from "./network.js";
+
 import type { Static } from "@sinclair/typebox";
 
 export const schema = Type.Object({
+  database,
   logging,
   network
 }, {

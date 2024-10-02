@@ -26,11 +26,29 @@ jobs:
         node-version:
           - lts/*
           - latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: depixy
+          POSTGRES_USER: depixy
+          POSTGRES_PASSWORD: depixy
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    env:
+      DATABASE_URL: postgresql://depixy:depixy@localhost:5432/depixy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
+      - run: npm run db:generate
       - run: npm run build
+      - run: npm run db:deploy
       - run: npm run test

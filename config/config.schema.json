@@ -4,7 +4,26 @@
   "title": "Depixy Backend Configuration",
   "type": "object",
   "properties": {
+    "database": {
+      "title": "Database Configuration",
+      "description": "All database related Configuration",
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "url": {
+          "title": "Database connection string",
+          "description": "Example: postgresql://depixy:depixy@db:5432/depixy",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url"
+      ]
+    },
     "logging": {
+      "title": "Logging Configuration",
+      "description": "All logging related Configuration",
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "level": {
@@ -41,71 +60,68 @@
             }
           ]
         },
-        "content": {
-          "type": "object",
-          "properties": {
-            "request": {
-              "title": "Log Level",
-              "anyOf": [
-                {
-                  "const": "all",
-                  "type": "string"
-                },
-                {
-                  "const": "forbidden",
-                  "type": "string"
-                },
-                {
-                  "const": "error",
-                  "type": "string"
-                },
-                {
-                  "const": "silent",
-                  "type": "string"
-                }
-              ]
+        "request": {
+          "title": "Log Level",
+          "anyOf": [
+            {
+              "const": "all",
+              "type": "string"
             },
-            "database": {
-              "title": "Log Level",
-              "anyOf": [
-                {
-                  "const": "debug",
-                  "type": "string"
-                },
-                {
-                  "const": "info",
-                  "type": "string"
-                },
-                {
-                  "const": "warn",
-                  "type": "string"
-                },
-                {
-                  "const": "error",
-                  "type": "string"
-                },
-                {
-                  "const": "silent",
-                  "type": "string"
-                }
-              ]
+            {
+              "const": "forbidden",
+              "type": "string"
+            },
+            {
+              "const": "error",
+              "type": "string"
+            },
+            {
+              "const": "silent",
+              "type": "string"
             }
-          },
-          "required": [
-            "request",
-            "database"
+          ]
+        },
+        "database": {
+          "title": "Log Level",
+          "anyOf": [
+            {
+              "const": "debug",
+              "type": "string"
+            },
+            {
+              "const": "info",
+              "type": "string"
+            },
+            {
+              "const": "warn",
+              "type": "string"
+            },
+            {
+              "const": "error",
+              "type": "string"
+            },
+            {
+              "const": "silent",
+              "type": "string"
+            }
           ]
         }
       },
       "required": [
         "level",
-        "content"
+        "request",
+        "database"
       ]
     },
     "network": {
+      "title": "Network Configuration",
+      "description": "All network related Configuration",
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "trustProxy": {
+          "title": "Trust proxy headers",
+          "description": "Enable if the upstream services are trusted, i.e. reverse proxies.",
           "type": "boolean"
         }
       },
@@ -115,6 +131,7 @@
     }
   },
   "required": [
+    "database",
     "logging",
     "network"
   ]
