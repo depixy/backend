@@ -6,3 +6,6 @@ network:
   trustProxy: NETWORK_TRUST_PROXY
 database:
   url: DATABASE_URL
+session:
+  secret: SESSION_SECRET
+  salt: SESSION_SALT

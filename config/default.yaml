@@ -7,3 +7,7 @@ network:
   trustProxy: false
 database:
   url: postgresql://depixy:depixy@db:5432/depixy
+session:
+  secret: this_is_a_secret_key_and_you_must_change_it
+  salt: you_must_change_
+  expiry: 86400

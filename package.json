@@ -8,6 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc",
+    "start": "cross-env NODE_OPTIONS=--enable-source-maps node dist/index.js",
     "preexport:json-schema": "npm run build",
     "export:json-schema": "node dist/config/export.js",
     "test": "cross-env NODE_OPTIONS=--enable-source-maps mocha",
@@ -41,6 +42,12 @@
     "#plugins/*": {
       "import": "./dist/plugins/*/index.js"
     },
+    "#routes": {
+      "import": "./dist/routes/index.js"
+    },
+    "#schema": {
+      "import": "./dist/schema/index.js"
+    },
     "#utils": {
       "import": "./dist/utils/index.js"
     }
@@ -55,9 +62,11 @@
     "@joshuaavalon/eslint-config-typescript": "^8.2.2",
     "@types/chai": "^4.3.14",
     "@types/config": "^3.3.5",
+    "@types/luxon": "^3.4.2",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.28",
     "@types/qs": "^6.9.16",
+    "@types/sodium-native": "^2.3.9",
     "chai": "^5.1.0",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
@@ -75,12 +84,15 @@
     "@fastify/swagger": "^9.0.0",
     "@joshuaavalon/fastify-plugin-typebox": "^2.0.0",
     "@prisma/client": "^5.20.0",
+    "@scalar/fastify-api-reference": "^1.25.25",
     "@sinclair/typebox": "^0.33.12",
     "argon2": "^0.41.1",
     "config": "^3.3.12",
     "fastify": "^5.0.0",
     "fastify-plugin": "^5.0.1",
     "js-yaml": "^4.1.0",
-    "qs": "^6.13.0"
+    "luxon": "^3.5.0",
+    "qs": "^6.13.0",
+    "sodium-native": "^4.2.0"
   }
 }

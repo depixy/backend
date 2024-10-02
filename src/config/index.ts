@@ -5,13 +5,15 @@ import { InvalidInputError } from "#error";
 import { database } from "./database.js";
 import { logging } from "./logging.js";
 import { network } from "./network.js";
+import { session } from "./session.js";
 
 import type { Static } from "@sinclair/typebox";
 
 export const schema = Type.Object({
   database,
   logging,
-  network
+  network,
+  session
 }, {
   $schema: "http://json-schema.org/draft-07/schema",
   $id: "https://raw.githubusercontent.com/depixy/backend/refs/heads/master/config/config.schema.json",

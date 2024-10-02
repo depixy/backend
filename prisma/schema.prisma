@@ -9,11 +9,20 @@ generator client {
 }
 
 model User {
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  loginName    String   @unique
+  id           String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  loginName    String      @unique
   displayName  String
   passwordHash String
-  email        String   @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
+  email        String      @unique
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now()) @updatedAt
+  tokens       UserToken[]
+}
+
+model UserToken {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  description String
+  expiredAt   DateTime
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String   @db.Uuid
 }
