@@ -29,6 +29,9 @@
   },
   "homepage": "https://github.com/depixy/backend#readme",
   "imports": {
+    "#app": {
+      "import": "./dist/app/index.js"
+    },
     "#config": {
       "import": "./dist/config/index.js"
     },

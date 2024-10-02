@@ -46,6 +46,7 @@ jobs:
       - run: npm ci
       - run: npm run db:generate
       - run: npm run build
+      - run: npm run db:deploy
       - run: npm run test
         env:
           DATABASE_URL: postgresql://depixy:depixy@postgres:5432/depixy
