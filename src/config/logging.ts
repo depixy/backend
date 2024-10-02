@@ -17,29 +17,28 @@ const level = Type.Union(
   }
 );
 
-const content = Type.Object({
-  request: Type.Union(
-    [
-      Type.Const("all" as const),
-      Type.Const("forbidden" as const),
-      Type.Const("error" as const),
-      Type.Const("silent" as const)
-    ],
-    { title: "Log Level" }
-  ),
-  database: Type.Union(
-    [
-      Type.Const("debug" as const),
-      Type.Const("info" as const),
-      Type.Const("warn" as const),
-      Type.Const("error" as const),
-      Type.Const("silent" as const)
-    ],
-    { title: "Log Level" }
-  )
-});
+const request = Type.Union(
+  [
+    Type.Const("all" as const),
+    Type.Const("forbidden" as const),
+    Type.Const("error" as const),
+    Type.Const("silent" as const)
+  ],
+  { title: "Log Level" }
+);
 
-export const logging = Type.Object({ level, content }, {
+const database = Type.Union(
+  [
+    Type.Const("debug" as const),
+    Type.Const("info" as const),
+    Type.Const("warn" as const),
+    Type.Const("error" as const),
+    Type.Const("silent" as const)
+  ],
+  { title: "Log Level" }
+);
+
+export const logging = Type.Object({ level, request, database }, {
   title: "Logging Configuration",
   description: "All logging related Configuration",
   additionalProperties: false

@@ -1,9 +1,8 @@
 # yaml-language-server: $schema=./config.schema.json
 logging:
   level: info
-  content:
-    request: forbidden
-    database: warn
+  request: forbidden
+  database: warn
 network:
   trustProxy: false
 database:

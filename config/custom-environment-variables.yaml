@@ -1,8 +1,7 @@
 logging:
   level: LOGGING_LEVEL
-  content:
-    request: LOGGING_CONTENT_REQUEST
-    database: LOGGING_CONTENT_DATABASE
+  request: LOGGING_REQUEST
+  database: LOGGING_DATABASE
 network:
   trustProxy: NETWORK_TRUST_PROXY
 database:

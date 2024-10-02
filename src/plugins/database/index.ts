@@ -17,23 +17,23 @@ export const databasePlugin = fp<Config>(
         { emit: "event", level: "error" }
       ]
     });
-    if (logging.content.database === "debug") {
+    if (logging.database === "debug") {
       db.$on("query", e => {
         const { query, params, duration } = e;
         app.log.debug({ query, params, duration });
       });
     }
-    if (["debug", "info"].includes(logging.content.database)) {
+    if (["debug", "info"].includes(logging.database)) {
       db.$on("info", e => {
         app.log.info(e.message);
       });
     }
-    if (["debug", "info", "warn"].includes(logging.content.database)) {
+    if (["debug", "info", "warn"].includes(logging.database)) {
       db.$on("warn", e => {
         app.log.info(e.message);
       });
     }
-    if (["debug", "info", "warn", "error"].includes(logging.content.database)) {
+    if (["debug", "info", "warn", "error"].includes(logging.database)) {
       db.$on("error", e => {
         app.log.info(e.message);
       });
@@ -45,7 +45,7 @@ export const databasePlugin = fp<Config>(
   },
   {
     name,
-    fastify: "4.x",
+    fastify: "5.x",
     decorators: {}
   }
 );

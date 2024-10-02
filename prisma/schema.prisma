@@ -9,83 +9,12 @@ generator client {
 }
 
 model User {
-  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name         String    @unique
-  passwordHash String    @map("password_hash")
-  email        String    @unique
-  isAdmin      Boolean   @map("is_admin")
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at")
-  sessions     Session[]
-  galleries    Gallery[]
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String   @unique
+  passwordHash String   @map("password_hash")
+  email        String   @unique
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
 
   @@map("user")
-}
-
-model Session {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String   @map("user_id") @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
-  expiredAt DateTime
-
-  @@map("session")
-}
-
-model Image {
-  id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  mime      String
-  hash1     String
-  hash2     String
-  hash3     String
-  hash4     String
-  galleryId String  @map("gallery_id") @db.Uuid
-  gallery   Gallery @relation(fields: [galleryId], references: [id])
-
-  @@index([hash1])
-  @@index([hash2])
-  @@index([hash3])
-  @@index([hash4])
-  @@map("image")
-}
-
-model Gallery {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String
-  description String
-  createdAt   DateTime @default(now()) @map("created_at")
-  createdBy   String   @map("created_by") @db.Uuid
-  createdUser User     @relation(fields: [createdBy], references: [id])
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
-  tags        Tag[]
-  images      Image[]
-
-  @@index([createdAt(sort: Desc)])
-  @@map("gallery")
-}
-
-model TagCategory {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name      String   @unique
-  color     String
-  tags      Tag[]
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
-
-  @@map("tag_category")
-}
-
-model Tag {
-  id         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name       String      @unique
-  categoryId String      @map("category_id") @db.Uuid
-  category   TagCategory @relation(fields: [categoryId], references: [id])
-  createdAt  DateTime    @default(now()) @map("created_at")
-  updatedAt  DateTime    @default(now()) @updatedAt @map("updated_at")
-  galleries  Gallery[]
-  parentTags Tag[]       @relation("child_tags")
-  childTags  Tag[]       @relation("child_tags")
-
-  @@map("tag")
 }
