@@ -8,6 +8,6 @@ export const network = Type.Object({
   })
 }, {
   title: "Network Configuration",
-  description: "All network related Configuration",
+  description: "All network related configuration",
   additionalProperties: false
 });

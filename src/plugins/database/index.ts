@@ -1,15 +1,18 @@
 import { PrismaClient } from "@prisma/client";
 import fp from "fastify-plugin";
 
-import type { Config } from "#config";
-
 const name = "#plugins/database";
 
-export const databasePlugin = fp<Config>(
+interface DatabasePluginOptions {
+  datasourceUrl: string;
+  logLevel: "debug" | "info" | "warn" | "error" | "silent";
+}
+
+export const databasePlugin = fp<DatabasePluginOptions>(
   async (app, opts) => {
-    const { database, logging } = opts;
+    const { datasourceUrl, logLevel } = opts;
     const db = new PrismaClient({
-      datasourceUrl: database.url,
+      datasourceUrl,
       log: [
         { emit: "event", level: "query" },
         { emit: "event", level: "info" },
@@ -17,23 +20,23 @@ export const databasePlugin = fp<Config>(
         { emit: "event", level: "error" }
       ]
     });
-    if (logging.database === "debug") {
+    if (logLevel === "debug") {
       db.$on("query", e => {
         const { query, params, duration } = e;
         app.log.debug({ query, params, duration });
       });
     }
-    if (["debug", "info"].includes(logging.database)) {
+    if (["debug", "info"].includes(logLevel)) {
       db.$on("info", e => {
         app.log.info(e.message);
       });
     }
-    if (["debug", "info", "warn"].includes(logging.database)) {
+    if (["debug", "info", "warn"].includes(logLevel)) {
       db.$on("warn", e => {
         app.log.info(e.message);
       });
     }
-    if (["debug", "info", "warn", "error"].includes(logging.database)) {
+    if (["debug", "info", "warn", "error"].includes(logLevel)) {
       db.$on("error", e => {
         app.log.info(e.message);
       });

@@ -7,6 +7,6 @@ export const database = Type.Object({
   })
 }, {
   title: "Database Configuration",
-  description: "All database related Configuration",
+  description: "All database related configuration",
   additionalProperties: false
 });

@@ -7,6 +7,6 @@ export const session = Type.Object({
   expiry: Type.Number({ minimum: 600, description: "Number of second for the session to be expired" })
 }, {
   title: "Session Configuration",
-  description: "All session related Configuration",
+  description: "All session related configuration",
   additionalProperties: false
 });

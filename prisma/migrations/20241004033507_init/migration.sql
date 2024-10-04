@@ -3,7 +3,7 @@ CREATE TABLE "User" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "loginName" TEXT NOT NULL,
     "displayName" TEXT NOT NULL,
-    "passwordHash" TEXT NOT NULL,
+    "passwordHash" BYTEA NOT NULL,
     "email" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

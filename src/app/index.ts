@@ -3,6 +3,7 @@ import cookiePlugin from "@fastify/cookie";
 import sessionPlugin from "@fastify/secure-session";
 import typeboxPlugin from "@joshuaavalon/fastify-plugin-typebox";
 import fastify from "fastify";
+import { authPlugin } from "#plugins/auth";
 import { databasePlugin } from "#plugins/database";
 import { addRoutes } from "#routes";
 import { errorFormatter, errorHandler, notFoundHandler } from "./error.js";
@@ -34,24 +35,15 @@ export async function createApp(cfg: Config): Promise<FastifyInstance> {
     .setSchemaErrorFormatter(errorFormatter);
   app.decorate("config", cfg);
   await app.register(typeboxPlugin);
-  await app.register(databasePlugin, cfg);
+  await app.register(databasePlugin, {
+    datasourceUrl: cfg.database.url,
+    logLevel: cfg.logging.database
+  });
   await app.register(cookiePlugin);
   await app.register(sessionPlugin, [{
     secret: cfg.session.secret,
     salt: cfg.session.salt,
-    sessionName: "accessSession",
-    expiry: 180,
-    cookie: {
-      path: "/",
-      httpOnly: true,
-      sameSite: "strict",
-      secure: "auto",
-      maxAge: 180
-    }
-  }, {
-    secret: cfg.session.secret,
-    salt: cfg.session.salt,
-    sessionName: "session",
+    sessionName: "refreshSession",
     expiry: cfg.session.expiry,
     cookie: {
       path: "/",
@@ -60,19 +52,32 @@ export async function createApp(cfg: Config): Promise<FastifyInstance> {
       secure: "auto",
       maxAge: cfg.session.expiry
     }
+  }, {
+    secret: cfg.session.secret,
+    salt: cfg.session.salt,
+    sessionName: "session",
+    expiry: 300,
+    cookie: {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: "auto",
+      maxAge: 300
+    }
   }]);
+  await app.register(authPlugin);
   await initSwagger(app);
   addRoutes(app);
   return app;
 }
 
 declare module "fastify" {
-  interface AccessSession {
-    id: string;
+  interface RefreshSession {
+    userTokenId: string;
   }
 
   interface FastifyRequest {
-    accessSession: Session<AccessSession>;
+    refreshSession: Session<RefreshSession>;
   }
 
   interface FastifyInstance {

@@ -3,9 +3,18 @@ logging:
   request: LOGGING_REQUEST
   database: LOGGING_DATABASE
 network:
-  trustProxy: NETWORK_TRUST_PROXY
+  trustProxy:
+    __name: NETWORK_TRUST_PROXY
+    __format: boolean
 database:
   url: DATABASE_URL
 session:
   secret: SESSION_SECRET
   salt: SESSION_SALT
+  expiry:
+    __name: SESSION_EXPIRY
+    __format: number
+feature:
+  userRegistration:
+    __name: FEAT_USER_REGISTRATION
+    __format: boolean

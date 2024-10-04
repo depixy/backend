@@ -6,7 +6,7 @@
   "properties": {
     "database": {
       "title": "Database Configuration",
-      "description": "All database related Configuration",
+      "description": "All database related configuration",
       "additionalProperties": false,
       "type": "object",
       "properties": {
@@ -20,9 +20,25 @@
         "url"
       ]
     },
+    "feature": {
+      "title": "Feature Configuration",
+      "description": "All features related configuration",
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "userRegistration": {
+          "title": "Enable user registration",
+          "description": "Allow new user to register",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "userRegistration"
+      ]
+    },
     "logging": {
       "title": "Logging Configuration",
-      "description": "All logging related Configuration",
+      "description": "All logging related configuration",
       "additionalProperties": false,
       "type": "object",
       "properties": {
@@ -115,7 +131,7 @@
     },
     "network": {
       "title": "Network Configuration",
-      "description": "All network related Configuration",
+      "description": "All network related configuration",
       "additionalProperties": false,
       "type": "object",
       "properties": {
@@ -131,7 +147,7 @@
     },
     "session": {
       "title": "Session Configuration",
-      "description": "All session related Configuration",
+      "description": "All session related configuration",
       "additionalProperties": false,
       "type": "object",
       "properties": {
@@ -145,7 +161,7 @@
           "type": "string"
         },
         "expiry": {
-          "minimum": 60,
+          "minimum": 600,
           "description": "Number of second for the session to be expired",
           "type": "number"
         }
@@ -159,6 +175,7 @@
   },
   "required": [
     "database",
+    "feature",
     "logging",
     "network",
     "session"

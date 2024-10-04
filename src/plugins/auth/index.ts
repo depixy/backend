@@ -4,7 +4,7 @@ import { addFunctions } from "./func/index.js";
 const name = "#plugins/auth";
 
 
-export default fp(
+export const authPlugin = fp(
   async app => {
     addFunctions(app);
   },
@@ -19,6 +19,6 @@ export default fp(
 
 declare module "@fastify/secure-session" {
   interface SessionData {
-    userId?: string;
+    userTokenId?: string;
   }
 }

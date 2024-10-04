@@ -10,4 +10,7 @@ database:
 session:
   secret: this_is_a_secret_key_and_you_must_change_it
   salt: you_must_change_
-  expiry: 86400
+  # Access token expiry (second)
+  expiry: 2592000
+feature:
+  userRegistration: true

@@ -1,5 +1,5 @@
 import { ValidationError } from "@joshuaavalon/fastify-plugin-typebox";
-// import { Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { ApiError, InvalidInputError, httpError } from "#error";
 import { StatusCodes } from "#utils";
 
@@ -13,10 +13,16 @@ import type { FastifySchemaValidationError } from "fastify/types/schema.js";
 
 function sendApiError(res: FastifyReply, err: ApiError): void {
   const { status } = err;
+  if (status >= 400) {
+    if (status >= 500) {
+      res.log.error({ reqId: res.request.id, err }, err.message);
+    } else {
+      res.log.warn({ reqId: res.request.id, err: err.toJson() }, err.message);
+    }
+  }
   res.status(status).send({ success: false, reqId: res.request.id, ...err.toJson() });
 }
 
-// TODO: Handle Prisma.PrismaClientKnownRequestError
 // eslint-disable-next-line max-params
 export async function errorHandler(
   this: FastifyInstance,
@@ -32,30 +38,33 @@ export async function errorHandler(
     sendApiError(res, InvalidInputError.validation(err));
     return;
   }
-  // let internalErr: ApiError;
-  // if (err instanceof Prisma.PrismaClientKnownRequestError) {
-  //   switch (err.code) {
-  //     // TODO
-  //     case "P2002": {
-  //       if (err.meta && Array.isArray(err.meta.target)) {
-  //         sendApiError(res, new InvalidInputError(err.meta.target.map(field => ({
-  //           path: `/${field}`,
-  //           message: "Not unique"
-  //         }))));
-  //       } else {
-  //         sendApiError(res, new InvalidInputError([]));
-  //       }
-  //       return;
-  //     }
-  //     // case "P2003":
-  //     //   res.status(StatusCodes.unprocessableEntity).send({ success: false, code: "FOREIGN_CONSTRAINT", message: "Related record(s) exists / not exist", reqId: req.id });
-  //     case "P2025":
-  //       sendApiError(res, new InvalidInputError([{ path: "/", message: "Reference id(s) not found" }]));
-  //       return;
-  //     default:
-  //       // No action
-  //   }
-  // }
+  if (err instanceof SyntaxError) {
+    sendApiError(res, httpError(StatusCodes.forbidden, err.message));
+    return;
+  }
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    switch (err.code) {
+      // TODO
+      case "P2002": {
+        if (err.meta && Array.isArray(err.meta.target)) {
+          sendApiError(res, new InvalidInputError(err.meta.target.map(field => ({
+            path: `/${field}`,
+            message: "Not unique"
+          }))));
+        } else {
+          sendApiError(res, new InvalidInputError([]));
+        }
+        return;
+      }
+      // case "P2003":
+      //   res.status(StatusCodes.unprocessableEntity).send({ success: false, code: "FOREIGN_CONSTRAINT", message: "Related record(s) exists / not exist", reqId: req.id });
+      case "P2025":
+        sendApiError(res, new InvalidInputError([{ path: "/", message: "Reference id(s) not found" }]));
+        return;
+      default:
+        // No action
+    }
+  }
   // if (err instanceof Prisma.PrismaClientUnknownRequestError) {
   //   if (err.message.includes("check_self_ref_tag")) {
   //     sendApiError(res, new InvalidInputError([{ path: "/", message: "Self reference tags are not allowed" }]));
@@ -73,6 +82,9 @@ export async function errorHandler(
   let internalErr: ApiError;
   switch (err.code) {
     case "FST_ERR_CTP_INVALID_MEDIA_TYPE":
+      internalErr = httpError(StatusCodes.unsupportedMediaType);
+      break;
+    case "FST_ERR_CTP_EMPTY_JSON_BODY":
       internalErr = httpError(StatusCodes.unsupportedMediaType);
       break;
     default:
