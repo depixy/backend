@@ -40,6 +40,6 @@ const database = Type.Union(
 
 export const logging = Type.Object({ level, request, database }, {
   title: "Logging Configuration",
-  description: "All logging related Configuration",
+  description: "All logging related configuration",
   additionalProperties: false
 });

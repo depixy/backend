@@ -63,7 +63,8 @@ export const httpErrorMapping = {
   [StatusCodes.misdirectedRequest]: { code: "MISDIRECTED_REQUEST", message: "Misdirected Request" }
 } as const;
 
-export function httpError(code = StatusCodes.internalServerError): ApiError {
+export function httpError(code = StatusCodes.internalServerError, message?: string): ApiError {
   const e = httpErrorMapping[code];
-  return new ApiError({ status: code, ...e });
+  const msg = message ?? e.message;
+  return new ApiError({ status: code, ...e, message: msg });
 }
