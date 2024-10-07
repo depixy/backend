@@ -8,7 +8,7 @@ import {
   passwordSchema,
   refreshTokenSchema
 } from "#schema";
-import { StatusCodes } from "#utils";
+import { StatusCodes, createSwaggerDescription } from "#utils";
 
 import type { FastifyInstance } from "fastify";
 
@@ -26,7 +26,10 @@ export function addPostRoute(app: FastifyInstance): void {
   app.post("/api/auth/native/refresh-token", {
     schema: {
       summary: "Create refresh token",
-      description: "Create refresh token with access token. Refresh token is return in cookie.",
+      description: createSwaggerDescription(
+        "Create refresh token with access token. Refresh token is return in cookie.",
+        [["UserToken", "create:self"]]
+      ),
       tags: ["Authorization"],
       params: paramsSchema,
       body: bodySchema,
@@ -42,6 +45,8 @@ export function addPostRoute(app: FastifyInstance): void {
     if (!isPasswordValid) {
       throw httpError(StatusCodes.forbidden, "Invalid loginName or password");
     }
+    req.setUser(user);
+    await req.assertAbility("UserToken", "create:self");
     await this.db.userToken.deleteMany({ where: { expiredAt: { lt: DateTime.now().toJSDate() } } });
     const data = await this.db.userToken.create({
       data: {

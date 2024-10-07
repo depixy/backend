@@ -25,16 +25,7 @@
       "description": "All features related configuration",
       "additionalProperties": false,
       "type": "object",
-      "properties": {
-        "userRegistration": {
-          "title": "Enable user registration",
-          "description": "Allow new user to register",
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "userRegistration"
-      ]
+      "properties": {}
     },
     "logging": {
       "title": "Logging Configuration",

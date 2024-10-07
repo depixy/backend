@@ -65,20 +65,20 @@ export async function errorHandler(
         // No action
     }
   }
-  // if (err instanceof Prisma.PrismaClientUnknownRequestError) {
-  //   if (err.message.includes("check_self_ref_tag")) {
-  //     sendApiError(res, new InvalidInputError([{ path: "/", message: "Self reference tags are not allowed" }]));
-  //     return;
-  //   }
-  //   if (err.message.includes("TAG_PARENT_AND_CHILD_SAME")) {
-  //     sendApiError(res, new InvalidInputError([{ path: "/", message: "Same reference tags are not allowed" }]));
-  //     return;
-  //   }
-  //   if (err.message.includes("TAG_CIRCULAR_REF")) {
-  //     sendApiError(res, new InvalidInputError([{ path: "/", message: "Circular reference tags are not allowed" }]));
-  //     return;
-  //   }
-  // }
+  if (err instanceof Prisma.PrismaClientUnknownRequestError) {
+    if (err.message.includes("TAG_SELF_REF")) {
+      sendApiError(res, new InvalidInputError([{ path: "/", message: "Self reference tags are not allowed" }]));
+      return;
+    }
+    if (err.message.includes("TAG_PARENT_AND_CHILD_SAME")) {
+      sendApiError(res, new InvalidInputError([{ path: "/", message: "Same reference tags are not allowed" }]));
+      return;
+    }
+    if (err.message.includes("TAG_CIRCULAR_REF")) {
+      sendApiError(res, new InvalidInputError([{ path: "/", message: "Circular reference tags are not allowed" }]));
+      return;
+    }
+  }
   let internalErr: ApiError;
   switch (err.code) {
     case "FST_ERR_CTP_INVALID_MEDIA_TYPE":

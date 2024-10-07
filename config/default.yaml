@@ -12,5 +12,4 @@ session:
   salt: you_must_change_
   # Access token expiry (second)
   expiry: 2592000
-feature:
-  userRegistration: true
+feature: {}

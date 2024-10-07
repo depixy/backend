@@ -1,11 +1,6 @@
 import { Type } from "@sinclair/typebox";
 
-export const feature = Type.Object({
-  userRegistration: Type.Boolean({
-    title: "Enable user registration",
-    description: "Allow new user to register"
-  })
-}, {
+export const feature = Type.Object({}, {
   title: "Feature Configuration",
   description: "All features related configuration",
   additionalProperties: false

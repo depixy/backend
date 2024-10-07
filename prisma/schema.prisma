@@ -17,6 +17,8 @@ model User {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @default(now()) @updatedAt
   tokens       UserToken[]
+  role         Role        @relation(fields: [roleId], references: [id])
+  roleId       String      @db.Uuid
 }
 
 model UserToken {
@@ -25,4 +27,43 @@ model UserToken {
   expiredAt   DateTime
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String   @db.Uuid
+}
+
+model Role {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String       @unique
+  editable    Boolean
+  deletable   Boolean
+  permissions Permission[]
+  users       User[]
+}
+
+model Permission {
+  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subject String
+  action  String
+  Role    Role   @relation(fields: [roleId], references: [id])
+  roleId  String @db.Uuid
+
+  @@unique([roleId, subject, action])
+}
+
+model TagCategory {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String   @unique
+  color     String
+  tags      Tag[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Tag {
+  id         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String      @unique
+  category   TagCategory @relation(fields: [categoryId], references: [id])
+  categoryId String      @db.Uuid
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @default(now()) @updatedAt
+  parentTags Tag[]       @relation("ChildTags")
+  childTags  Tag[]       @relation("ChildTags")
 }

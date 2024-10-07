@@ -1,5 +1,4 @@
 import { Type } from "@sinclair/typebox";
-import { httpError } from "#error";
 import {
   apiSuccess,
   apiResponse,
@@ -9,7 +8,7 @@ import {
   userDetailSchema,
   emailSchema
 } from "#schema";
-import { StatusCodes } from "#utils";
+import { StatusCodes, createSwaggerDescription } from "#utils";
 
 import type { FastifyInstance } from "fastify";
 
@@ -28,21 +27,26 @@ export function addPostRoute(app: FastifyInstance): void {
   app.post("/api/user/register", {
     schema: {
       summary: "Register new user",
-      description: "This feature must be enabled in configuration (`feature.userRegistration`).",
+      description: createSwaggerDescription(
+        "Create new user with `User` role.",
+        [["User", "create"]]
+      ),
       tags: ["User"],
       params: paramsSchema,
       body: bodySchema,
       response: apiResponse(responseSchema)
     }
   }, async function (req, res) {
-    if (!this.config.feature.userRegistration) {
-      throw httpError(StatusCodes.forbidden, "User registration is disabled.");
-    }
+    await req.assertAbility("User", "create");
     const { password, ...data } = req.body;
     const passwordHash = await this.hashPassword(password);
     const user = await this.db.user.create({
       include: { tokens: true },
-      data: { passwordHash, ...data }
+      data: {
+        ...data,
+        passwordHash,
+        role: { connect: { name: "User" } }
+      }
     });
     res.status(StatusCodes.ok).send({ success: true, data: user });
   });

@@ -14,7 +14,3 @@ session:
   expiry:
     __name: SESSION_EXPIRY
     __format: number
-feature:
-  userRegistration:
-    __name: FEAT_USER_REGISTRATION
-    __format: boolean
