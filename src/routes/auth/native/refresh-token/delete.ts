@@ -1,15 +1,13 @@
 import { Type } from "@sinclair/typebox";
 import { DateTime } from "luxon";
 import {
-  apiSuccess,
   apiResponse,
+  apiSuccess,
   uuidSchema
 } from "#schema";
-import { StatusCodes, createSwaggerDescription } from "#utils";
-
+import { Tags } from "#swagger";
+import { createSwaggerDescription, StatusCodes } from "#utils";
 import type { FastifyInstance } from "fastify";
-
-const paramsSchema = Type.Object({ }, { additionalProperties: false });
 
 const bodySchema = Type.Object({ userTokenIds: Type.Array(uuidSchema()) }, { additionalProperties: false });
 
@@ -23,8 +21,7 @@ export function addDeleteRoute(app: FastifyInstance): void {
         "Refresh tokens can only be deleted by their owners.",
         [["UserToken", "delete:self"]]
       ),
-      tags: ["Authorization"],
-      params: paramsSchema,
+      tags: [Tags.authorization],
       body: bodySchema,
       response: apiResponse(responseSchema)
     }
@@ -42,6 +39,6 @@ export function addDeleteRoute(app: FastifyInstance): void {
         }
       });
     }
-    res.status(StatusCodes.ok).send({ success: true, data: {} });
+    await res.status(StatusCodes.ok).send({ success: true, data: {} });
   });
 }

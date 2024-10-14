@@ -1,6 +1,5 @@
 import { httpError } from "#error";
 import { StatusCodes } from "#utils";
-
 import type { User } from "@prisma/client";
 import type { FastifyRequest } from "fastify";
 

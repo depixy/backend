@@ -1,5 +1,4 @@
 import { ApiError } from "./api-error.js";
-
 import type { ValidationError as TypeboxValidationError } from "@joshuaavalon/fastify-plugin-typebox";
 import type { ValueErrorIterator } from "@sinclair/typebox/errors";
 

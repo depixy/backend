@@ -5,6 +5,7 @@ logging:
   database: warn
 network:
   trustProxy: false
+  ipHeader: x-forwarded-for
 database:
   url: postgresql://depixy:depixy@db:5432/depixy
 session:

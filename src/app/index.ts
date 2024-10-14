@@ -7,9 +7,9 @@ import { authPlugin } from "#plugins/auth";
 import { databasePlugin } from "#plugins/database";
 import { addRoutes } from "#routes";
 import { errorFormatter, errorHandler, notFoundHandler } from "./error.js";
+import { addCustomIpParsing } from "./ip.js";
 import { parseQueryString } from "./qs.js";
 import { initSwagger } from "./swagger.js";
-
 import type { Session } from "@fastify/secure-session";
 import type { FastifyInstance } from "fastify";
 import type { Config } from "#config";
@@ -23,7 +23,22 @@ function genReqId(): string {
 
 export async function createApp(cfg: Config): Promise<FastifyInstance> {
   const app = await fastify({
-    logger: { level: cfg.logging.level },
+    logger: {
+      level: cfg.logging.level,
+      redact: ["req.headers.authorization", "req.headers.cookie"],
+      serializers: {
+        req(request) {
+          return {
+            method: request.method,
+            url: request.url,
+            headers: request.headers,
+            host: request.host,
+            remoteAddress: request.ip,
+            remotePort: request.socket.remotePort
+          };
+        }
+      }
+    },
     genReqId,
     querystringParser: parseQueryString,
     trustProxy: cfg.network.trustProxy,
@@ -34,6 +49,13 @@ export async function createApp(cfg: Config): Promise<FastifyInstance> {
     .setErrorHandler(errorHandler)
     .setSchemaErrorFormatter(errorFormatter);
   app.decorate("config", cfg);
+  addCustomIpParsing(app, {
+    header: cfg.network.ipHeader,
+    trustProxy: cfg.network.trustProxy
+  });
+  app.addHook("onRequest", req => {
+    req.log.info({ req }, "incoming request");
+  });
   await app.register(typeboxPlugin);
   await app.register(databasePlugin, {
     datasourceUrl: cfg.database.url,

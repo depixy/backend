@@ -1,8 +1,7 @@
 import { ValidationError } from "@joshuaavalon/fastify-plugin-typebox";
 import { Prisma } from "@prisma/client";
-import { ApiError, InvalidInputError, httpError } from "#error";
+import { ApiError, httpError, InvalidInputError } from "#error";
 import { StatusCodes } from "#utils";
-
 import type {
   FastifyError,
   FastifyInstance,
@@ -15,9 +14,9 @@ function sendApiError(res: FastifyReply, err: ApiError): void {
   const { status } = err;
   if (status >= 400) {
     if (status >= 500) {
-      res.log.error({ reqId: res.request.id, err }, err.message);
+      res.log.error({ err }, err.message);
     } else {
-      res.log.warn({ reqId: res.request.id, err: err.toJson() }, err.message);
+      res.log.warn({ err: err.toJson() }, err.message);
     }
   }
   res.status(status).send({ success: false, reqId: res.request.id, ...err.toJson() });

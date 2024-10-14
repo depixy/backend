@@ -1,25 +1,14 @@
-import { Type } from "@sinclair/typebox";
 import {
-  apiSuccess,
   apiResponse,
-  displayNameSchema,
-  loginNameSchema,
-  passwordSchema,
-  userDetailSchema,
-  emailSchema
+  apiSuccess,
+  userCreateInputSchema,
+  userDetailSchema
 } from "#schema";
-import { StatusCodes, createSwaggerDescription } from "#utils";
-
+import { Tags } from "#swagger";
+import { createSwaggerDescription, StatusCodes } from "#utils";
 import type { FastifyInstance } from "fastify";
 
-const paramsSchema = Type.Object({ }, { additionalProperties: false });
-
-const bodySchema = Type.Object({
-  loginName: loginNameSchema,
-  displayName: displayNameSchema,
-  email: emailSchema,
-  password: passwordSchema
-}, { additionalProperties: false });
+const bodySchema = userCreateInputSchema;
 
 const responseSchema = apiSuccess(userDetailSchema);
 
@@ -31,8 +20,7 @@ export function addPostRoute(app: FastifyInstance): void {
         "Create new user with `User` role.",
         [["User", "create"]]
       ),
-      tags: ["User"],
-      params: paramsSchema,
+      tags: [Tags.user],
       body: bodySchema,
       response: apiResponse(responseSchema)
     }
@@ -48,6 +36,6 @@ export function addPostRoute(app: FastifyInstance): void {
         role: { connect: { name: "User" } }
       }
     });
-    res.status(StatusCodes.ok).send({ success: true, data: user });
+    await res.status(StatusCodes.ok).send({ success: true, data: user });
   });
 }

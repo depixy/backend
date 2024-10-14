@@ -48,6 +48,12 @@
     "#schema": {
       "import": "./dist/schema/index.js"
     },
+    "#schema/*": {
+      "import": "./dist/schema/*/index.js"
+    },
+    "#swagger": {
+      "import": "./dist/swagger/index.js"
+    },
     "#utils": {
       "import": "./dist/utils/index.js"
     }
@@ -59,7 +65,7 @@
     }
   },
   "devDependencies": {
-    "@joshuaavalon/eslint-config-typescript": "^8.2.2",
+    "@joshuaavalon/eslint-config-typescript": "^8.2.3",
     "@types/chai": "^4.3.14",
     "@types/config": "^3.3.5",
     "@types/luxon": "^3.4.2",

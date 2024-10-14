@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import { uuidSchema } from "../scalar/index.js";
+import { uuidSchema } from "#schema/scalar";
 
 export const notFoundErrorSchema = Type.Object({
   success: Type.Const(false as const, { default: false }),

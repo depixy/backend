@@ -1,6 +1,5 @@
 import swaggerPlugin from "@fastify/swagger";
 import scalarPlugin from "@scalar/fastify-api-reference";
-
 import type { FastifyInstance } from "fastify";
 
 const description = `

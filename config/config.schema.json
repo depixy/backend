@@ -130,10 +130,16 @@
           "title": "Trust proxy headers",
           "description": "Enable if the upstream services are trusted, i.e. reverse proxies.",
           "type": "boolean"
+        },
+        "ipHeader": {
+          "title": "Client IP header",
+          "minLength": 1,
+          "type": "string"
         }
       },
       "required": [
-        "trustProxy"
+        "trustProxy",
+        "ipHeader"
       ]
     },
     "session": {

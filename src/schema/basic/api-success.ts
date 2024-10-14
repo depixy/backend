@@ -1,5 +1,4 @@
 import { Type } from "@sinclair/typebox";
-
 import type { TLiteral, TNull, TObject, TUnion } from "@sinclair/typebox";
 
 export type ApiSuccess<T extends TObject> = TObject<{ success: TLiteral<true>; data: T }>;

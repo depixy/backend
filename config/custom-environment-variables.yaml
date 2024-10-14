@@ -6,6 +6,7 @@ network:
   trustProxy:
     __name: NETWORK_TRUST_PROXY
     __format: boolean
+  ipHeader: NETWORK_IP_HEADER
 database:
   url: DATABASE_URL
 session:

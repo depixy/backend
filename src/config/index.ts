@@ -7,7 +7,6 @@ import { feature } from "./feature.js";
 import { logging } from "./logging.js";
 import { network } from "./network.js";
 import { session } from "./session.js";
-
 import type { Static } from "@sinclair/typebox";
 
 export const schema = Type.Object({

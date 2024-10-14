@@ -2,17 +2,15 @@ import { Type } from "@sinclair/typebox";
 import { DateTime } from "luxon";
 import { httpError } from "#error";
 import {
-  apiSuccess,
   apiResponse,
+  apiSuccess,
   loginNameSchema,
   passwordSchema,
   refreshTokenSchema
 } from "#schema";
-import { StatusCodes, createSwaggerDescription } from "#utils";
-
+import { Tags } from "#swagger";
+import { createSwaggerDescription, StatusCodes } from "#utils";
 import type { FastifyInstance } from "fastify";
-
-const paramsSchema = Type.Object({ }, { additionalProperties: false });
 
 const bodySchema = Type.Object({
   loginName: loginNameSchema,
@@ -30,8 +28,7 @@ export function addPostRoute(app: FastifyInstance): void {
         "Create refresh token with access token. Refresh token is return in cookie.",
         [["UserToken", "create:self"]]
       ),
-      tags: ["Authorization"],
-      params: paramsSchema,
+      tags: [Tags.authorization],
       body: bodySchema,
       response: apiResponse(responseSchema)
     }
@@ -57,6 +54,6 @@ export function addPostRoute(app: FastifyInstance): void {
     });
     req.refreshSession.set("userTokenId", data.id);
     req.session.set("userTokenId", data.id);
-    res.status(StatusCodes.ok).send({ success: true, data });
+    await res.status(StatusCodes.ok).send({ success: true, data });
   });
 }

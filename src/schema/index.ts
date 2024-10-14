@@ -1,4 +1,4 @@
-import type { TSchema, StaticDecode } from "@sinclair/typebox";
+import type { StaticDecode, TSchema } from "@sinclair/typebox";
 
 export * from "./basic/index.js";
 export * from "./data/index.js";

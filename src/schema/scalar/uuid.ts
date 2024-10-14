@@ -1,5 +1,4 @@
 import { FormatRegistry, Type } from "@sinclair/typebox";
-
 import type { StringOptions, TString } from "@sinclair/typebox";
 
 // eslint-disable-next-line prefer-named-capture-group

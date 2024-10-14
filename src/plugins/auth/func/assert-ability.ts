@@ -1,6 +1,5 @@
 import { httpError } from "#error";
 import { StatusCodes } from "#utils";
-
 import type { FastifyRequest } from "fastify";
 import type { Action, Subject } from "./define-ability-for.js";
 

@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import { dateTimeSchema, uuidSchema } from "../scalar/index.js";
+import { dateTimeSchema, uuidSchema } from "#schema/scalar";
 import { userTokenSchema } from "./user-token.js";
 
 export const userDetailSchema = Type.Object({

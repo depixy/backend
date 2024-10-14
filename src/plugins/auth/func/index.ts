@@ -8,7 +8,6 @@ import { hashPassword } from "./hash-password.js";
 import { setUser } from "./set-user.js";
 import { userSymbol } from "./user-symbol.js";
 import { verifyPassword } from "./verify-password.js";
-
 import type { User } from "@prisma/client";
 import type { FastifyInstance } from "fastify";
 import type { abilitySymbol } from "./ability-symbol.js";

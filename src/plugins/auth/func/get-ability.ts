@@ -1,7 +1,6 @@
 import { httpError } from "#error";
 import { StatusCodes } from "#utils";
 import { abilitySymbol } from "./ability-symbol.js";
-
 import type { FastifyRequest } from "fastify";
 import type { AppAbility } from "./define-ability-for.js";
 

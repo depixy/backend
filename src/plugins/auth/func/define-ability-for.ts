@@ -1,6 +1,5 @@
 import { AbilityBuilder, createMongoAbility } from "@casl/ability";
-
-import type { MongoAbility, CreateAbility } from "@casl/ability";
+import type { CreateAbility, MongoAbility } from "@casl/ability";
 import type { Permission, Role } from "@prisma/client";
 
 const actions = [

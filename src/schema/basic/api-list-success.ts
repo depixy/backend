@@ -1,6 +1,5 @@
 import { Type } from "@sinclair/typebox";
 import { paginationResultSchema } from "./pagination-result.js";
-
 import type { TArray, TLiteral, TObject } from "@sinclair/typebox";
 
 export type ApiListSuccess<T extends TObject> = TObject<{ success: TLiteral<true>; data: TArray<T> }>;

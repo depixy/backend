@@ -1,7 +1,6 @@
 import { assert } from "chai";
 import { readConfig } from "#config";
 import { createApp } from "../index.js";
-
 import type { FastifyInstance } from "fastify";
 
 describe("Test errors", async () => {

@@ -1,4 +1,4 @@
 import { Type } from "@sinclair/typebox";
-import { dateTimeSchema } from "../scalar/index.js";
+import { dateTimeSchema } from "#schema/scalar";
 
 export const refreshTokenSchema = Type.Object({ expiredAt: dateTimeSchema });

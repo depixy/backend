@@ -6,7 +6,6 @@ import {
   notFoundErrorSchema,
   unsupportedMediaTypeErrorSchema
 } from "../error/index.js";
-
 import type { TSchema } from "@sinclair/typebox";
 
 export interface ApiResponse<T extends TSchema> {
