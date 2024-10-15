@@ -37,7 +37,13 @@ export async function createApp(cfg: Config): Promise<FastifyInstance> {
             remotePort: request.socket.remotePort
           };
         }
-      }
+      },
+      transport: cfg.logging.format === "pretty"
+        ? {
+          target: "pino-pretty",
+          options: { colorize: true }
+        }
+        : undefined
     },
     genReqId,
     querystringParser: parseQueryString,

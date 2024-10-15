@@ -112,12 +112,26 @@
               "type": "string"
             }
           ]
+        },
+        "format": {
+          "title": "Log format",
+          "anyOf": [
+            {
+              "const": "pretty",
+              "type": "string"
+            },
+            {
+              "const": "json",
+              "type": "string"
+            }
+          ]
         }
       },
       "required": [
         "level",
         "request",
-        "database"
+        "database",
+        "format"
       ]
     },
     "network": {
@@ -133,6 +147,7 @@
         },
         "ipHeader": {
           "title": "Client IP header",
+          "description": "Determine which header to use for client ip.",
           "minLength": 1,
           "type": "string"
         }

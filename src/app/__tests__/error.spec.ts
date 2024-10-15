@@ -9,7 +9,7 @@ describe("Test errors", async () => {
     const cfg = await readConfig();
     app = await createApp(cfg);
     app.get("/internal-error", {}, async () => {
-      throw new Error("Unknown error");
+      throw new Error("Expected test error");
     });
   });
 

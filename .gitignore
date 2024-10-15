@@ -133,3 +133,4 @@ dist
 /secret-key
 dev.db*
 /tmp/
+/config/local.yaml

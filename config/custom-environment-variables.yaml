@@ -2,6 +2,7 @@ logging:
   level: LOGGING_LEVEL
   request: LOGGING_REQUEST
   database: LOGGING_DATABASE
+  format: LOGGING_FORMAT
 network:
   trustProxy:
     __name: NETWORK_TRUST_PROXY

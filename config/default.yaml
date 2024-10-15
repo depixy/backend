@@ -3,6 +3,7 @@ logging:
   level: info
   request: forbidden
   database: warn
+  format: json
 network:
   trustProxy: false
   ipHeader: x-forwarded-for

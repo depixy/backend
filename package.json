@@ -72,6 +72,7 @@
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.28",
     "@types/qs": "^6.9.16",
+    "@types/set-cookie-parser": "^2.4.10",
     "@types/sodium-native": "^2.3.9",
     "chai": "^5.1.0",
     "cross-env": "^7.0.3",
@@ -81,6 +82,7 @@
     "mocha": "^10.4.0",
     "prisma": "^5.20.0",
     "rimraf": "^6.0.1",
+    "set-cookie-parser": "^2.7.0",
     "typescript": "^5.4.2"
   },
   "dependencies": {
@@ -99,6 +101,7 @@
     "fastify-plugin": "^5.0.1",
     "js-yaml": "^4.1.0",
     "luxon": "^3.5.0",
+    "pino-pretty": "^11.2.2",
     "qs": "^6.13.0",
     "sodium-native": "^4.2.0"
   }

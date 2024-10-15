@@ -38,7 +38,20 @@ const database = Type.Union(
   { title: "Log Level" }
 );
 
-export const logging = Type.Object({ level, request, database }, {
+const format = Type.Union(
+  [
+    Type.Const("pretty" as const),
+    Type.Const("json" as const)
+  ],
+  { title: "Log format" }
+);
+
+export const logging = Type.Object({
+  level,
+  request,
+  database,
+  format
+}, {
   title: "Logging Configuration",
   description: "All logging related configuration",
   additionalProperties: false
