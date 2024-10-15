@@ -23,7 +23,7 @@ describe("Test routes", async () => {
       const json = await res.json();
       assert.equal(res.statusCode, 200);
       assert.equal(json.success, true);
-      assert.equal(json.loginName, loginName);
+      assert.equal(json.data.loginName, loginName);
       assert.isUndefined(json.password);
     });
 
@@ -36,7 +36,7 @@ describe("Test routes", async () => {
       };
       const res = await app.inject({ method: "POST", path: "/api/init", payload });
       const json = await res.json();
-      assert.equal(res.statusCode, 403);
+      assert.equal(res.statusCode, 400);
       assert.equal(json.success, false);
     });
 
