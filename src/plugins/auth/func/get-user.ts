@@ -15,7 +15,7 @@ export async function getUser(this: FastifyRequest): Promise<User | null> {
     include: { user: true },
     where: {
       id: userTokenId,
-      expiredAt: { gte: DateTime.now().toJSDate() }
+      expiredAt: { gte: DateTime.utc().toJSDate() }
     }
   });
   if (!userToken) {

@@ -1,6 +1,6 @@
 import { Type } from "@sinclair/typebox";
-import { hexColorSchema } from "../../basic/index.js";
-import { dateTimeSchema, uuidSchema } from "../../scalar/index.js";
+import { hexColorSchema } from "#schema/basic";
+import { dateTimeSchema, uuidSchema } from "#schema/scalar";
 import { tagSchema } from "../tag/entity.js";
 import { tagCategoryNameSchema } from "./tag-category-name.js";
 

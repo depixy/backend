@@ -1,22 +1,16 @@
-import { Type } from "@sinclair/typebox";
 import { DateTime } from "luxon";
 import { httpError } from "#error";
 import {
   apiResponse,
   apiSuccess,
-  loginNameSchema,
-  passwordSchema,
+  refreshTokenCreateInputSchema,
   refreshTokenSchema
 } from "#schema";
 import { Tags } from "#swagger";
 import { createSwaggerDescription, StatusCodes } from "#utils";
 import type { FastifyInstance } from "fastify";
 
-const bodySchema = Type.Object({
-  loginName: loginNameSchema,
-  password: passwordSchema,
-  description: Type.Optional(Type.String({ maxLength: 50 }))
-}, { additionalProperties: false });
+const bodySchema = refreshTokenCreateInputSchema;
 
 const responseSchema = apiSuccess(refreshTokenSchema);
 
@@ -26,7 +20,7 @@ export function addPostRoute(app: FastifyInstance): void {
       summary: "Create refresh token",
       description: createSwaggerDescription(
         "Create refresh token with access token. Refresh token is return in cookie.",
-        [["UserToken", "create:self"]]
+        [["UserToken", "create"]]
       ),
       tags: [Tags.authorization],
       body: bodySchema,
@@ -43,13 +37,13 @@ export function addPostRoute(app: FastifyInstance): void {
       throw httpError(StatusCodes.forbidden, "Invalid loginName or password");
     }
     req.setUser(user);
-    await req.assertAbility("UserToken", "create:self");
-    await this.db.userToken.deleteMany({ where: { expiredAt: { lt: DateTime.now().toJSDate() } } });
+    await req.assertAbility("UserToken", "create");
+    await this.db.userToken.deleteMany({ where: { expiredAt: { lt: DateTime.utc().toJSDate() } } });
     const data = await this.db.userToken.create({
       data: {
         userId: user.id,
         description,
-        expiredAt: DateTime.now().plus({ seconds: this.config.session.expiry }).toJSDate()
+        expiredAt: DateTime.utc().plus({ seconds: this.config.session.expiry }).toJSDate()
       }
     });
     req.refreshSession.set("userTokenId", data.id);

@@ -1,4 +1,9 @@
-function createPermissionsDescription(permissions: [string, string][] = []): string {
+import type { PermissionAction, PermissionSubject } from "#schema/data";
+
+
+type Permission = [PermissionSubject, PermissionAction];
+
+function createPermissionsDescription(permissions: Permission[] = []): string {
   if (permissions.length <= 0) {
     return "";
   }
@@ -8,6 +13,6 @@ function createPermissionsDescription(permissions: [string, string][] = []): str
 }
 
 
-export function createSwaggerDescription(functionDescription: string, permissions: [string, string][] = []): string {
+export function createSwaggerDescription(functionDescription: string, permissions: Permission[] = []): string {
   return `${createPermissionsDescription(permissions)}${functionDescription}`;
 }

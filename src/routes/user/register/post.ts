@@ -8,10 +8,6 @@ import { Tags } from "#swagger";
 import { createSwaggerDescription, StatusCodes } from "#utils";
 import type { FastifyInstance } from "fastify";
 
-const bodySchema = userCreateInputSchema;
-
-const responseSchema = apiSuccess(userDetailSchema);
-
 export function addPostRoute(app: FastifyInstance): void {
   app.post("/api/user/register", {
     schema: {
@@ -21,15 +17,18 @@ export function addPostRoute(app: FastifyInstance): void {
         [["User", "create"]]
       ),
       tags: [Tags.user],
-      body: bodySchema,
-      response: apiResponse(responseSchema)
+      body: userCreateInputSchema,
+      response: apiResponse(apiSuccess(userDetailSchema))
     }
   }, async function (req, res) {
     await req.assertAbility("User", "create");
     const { password, ...data } = req.body;
     const passwordHash = await this.hashPassword(password);
     const user = await this.db.user.create({
-      include: { tokens: true },
+      include: {
+        tokens: true,
+        role: { include: { permissions: true } }
+      },
       data: {
         ...data,
         passwordHash,

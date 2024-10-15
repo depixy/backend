@@ -1,15 +1,13 @@
 import { Type } from "@sinclair/typebox";
 import { dateTimeSchema, uuidSchema } from "#schema/scalar";
-import { roleDetailSchema } from "./role-detail.js";
 import { userDisplayNameSchema } from "./user-display-name.js";
 
-export const userDetailSchema = Type.Object({
+export const userSchema = Type.Object({
   id: uuidSchema(),
   displayName: userDisplayNameSchema,
   createdAt: dateTimeSchema,
-  updatedAt: dateTimeSchema,
-  role: roleDetailSchema
+  updatedAt: dateTimeSchema
 }, {
-  title: "User Detail",
+  title: "User",
   additionalProperties: false
 });

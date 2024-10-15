@@ -1,12 +1,8 @@
 import { httpError } from "#error";
-import { apiResponse, apiSuccess, userCreateInputSchema, userDetailSchema } from "#schema";
+import { apiResponse, apiSuccess, userCreateInputSchema, userPrivateDetailSchema } from "#schema";
 import { Tags } from "#swagger";
 import { createSwaggerDescription, StatusCodes } from "#utils";
 import type { FastifyInstance } from "fastify";
-
-const bodySchema = userCreateInputSchema;
-
-const responseSchema = apiSuccess(userDetailSchema);
 
 export function addPostRoute(app: FastifyInstance): void {
   app.post("/api/init", {
@@ -14,8 +10,8 @@ export function addPostRoute(app: FastifyInstance): void {
       summary: "Initialization",
       description: createSwaggerDescription("Initialize Depixy"),
       tags: [Tags.system],
-      body: bodySchema,
-      response: apiResponse(responseSchema)
+      body: userCreateInputSchema,
+      response: apiResponse(apiSuccess(userPrivateDetailSchema))
     }
   }, async function (req, res) {
     const userCount = await this.db.user.count();
@@ -25,7 +21,10 @@ export function addPostRoute(app: FastifyInstance): void {
     const { password, ...data } = req.body;
     const passwordHash = await this.hashPassword(password);
     const user = await this.db.user.create({
-      include: { tokens: true },
+      include: {
+        tokens: true,
+        role: { include: { permissions: true } }
+      },
       data: {
         ...data,
         passwordHash,

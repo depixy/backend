@@ -53,7 +53,7 @@ export async function createApp(cfg: Config): Promise<FastifyInstance> {
     header: cfg.network.ipHeader,
     trustProxy: cfg.network.trustProxy
   });
-  app.addHook("onRequest", req => {
+  app.addHook("onRequest", async req => {
     req.log.info({ req }, "incoming request");
   });
   await app.register(typeboxPlugin);
