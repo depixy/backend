@@ -2,6 +2,7 @@
 CREATE TABLE "TagCategory" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
+    "priority" INTEGER NOT NULL,
     "color" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -31,6 +32,9 @@ CREATE UNIQUE INDEX "TagCategory_name_key" ON "TagCategory"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "TagCategory_priority_key" ON "TagCategory"("priority");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_ChildTags_AB_unique" ON "_ChildTags"("A", "B");

@@ -51,6 +51,7 @@ model Permission {
 model TagCategory {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String   @unique
+  priority  Int      @unique
   color     String
   tags      Tag[]
   createdAt DateTime @default(now())

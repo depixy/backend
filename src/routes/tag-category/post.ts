@@ -3,10 +3,6 @@ import { Tags } from "#swagger";
 import { createSwaggerDescription, StatusCodes } from "#utils";
 import type { FastifyInstance } from "fastify";
 
-const bodySchema = tagCategoryCreateInputSchema;
-
-const responseSchema = apiSuccess(tagCategoryDetailSchema);
-
 export function addPostRoute(app: FastifyInstance): void {
   app.post("/api/tag-category", {
     schema: {
@@ -16,8 +12,8 @@ export function addPostRoute(app: FastifyInstance): void {
         [["TagCategory", "create"]]
       ),
       tags: [Tags.tagCategory],
-      body: bodySchema,
-      response: apiResponse(responseSchema)
+      body: tagCategoryCreateInputSchema,
+      response: apiResponse(apiSuccess(tagCategoryDetailSchema))
     }
   }, async function (req, res) {
     await req.assertAbility("TagCategory", "create");

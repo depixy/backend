@@ -1,12 +1,7 @@
-import { Type } from "@sinclair/typebox";
-import { apiResponse, apiSuccess, tagCategoryDetailSchema, uuidSchema } from "#schema";
+import { apiResponse, apiSuccess, idParamSchema, tagCategoryDetailSchema } from "#schema";
 import { Tags } from "#swagger";
 import { createSwaggerDescription, StatusCodes } from "#utils";
 import type { FastifyInstance } from "fastify";
-
-const paramsSchema = Type.Object({ id: uuidSchema() }, { additionalProperties: false });
-
-const responseSchema = apiSuccess(tagCategoryDetailSchema, true);
 
 export function addIdRoute(app: FastifyInstance): void {
   app.get("/api/tag-category/:id", {
@@ -17,8 +12,8 @@ export function addIdRoute(app: FastifyInstance): void {
         [["TagCategory", "detail"]]
       ),
       tags: [Tags.tagCategory],
-      params: paramsSchema,
-      response: apiResponse(responseSchema)
+      params: idParamSchema,
+      response: apiResponse(apiSuccess(tagCategoryDetailSchema, true))
     }
   }, async function (req, res) {
     await req.assertAbility("TagCategory", "detail");

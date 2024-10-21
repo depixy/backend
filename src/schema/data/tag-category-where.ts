@@ -1,6 +1,6 @@
 import { Type } from "@sinclair/typebox";
-import { dateTimeFilter, idFilter, stringFilter } from "#schema/filter";
-import { tagWhereSchema } from "../tag/where.js";
+import { dateTimeFilter, idFilter, intFilter, stringFilter } from "#schema/filter";
+import { tagWhereSchema } from "./tag/where.js";
 
 export const tagCategoryWhereSchema = Type.Recursive(thisType => Type.Object({
   AND: Type.Optional(Type.Array(thisType)),
@@ -9,6 +9,7 @@ export const tagCategoryWhereSchema = Type.Recursive(thisType => Type.Object({
   id: Type.Optional(idFilter),
   name: Type.Optional(stringFilter),
   color: Type.Optional(stringFilter),
+  priority: Type.Optional(intFilter),
   createdAt: Type.Optional(dateTimeFilter),
   updatedAt: Type.Optional(dateTimeFilter),
   tags: Type.Optional(Type.Object({

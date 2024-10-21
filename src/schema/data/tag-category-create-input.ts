@@ -4,5 +4,9 @@ import { tagCategoryNameSchema } from "./tag-category-name.js";
 
 export const tagCategoryCreateInputSchema = Type.Object({
   name: tagCategoryNameSchema,
-  color: hexColorSchema
-}, { additionalProperties: false });
+  color: hexColorSchema,
+  priority: Type.Integer()
+}, {
+  title: "Tag Category Create Input",
+  additionalProperties: false
+});

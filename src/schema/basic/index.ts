@@ -2,6 +2,7 @@ export * from "./api-list-success.js";
 export * from "./api-response.js";
 export * from "./api-success.js";
 export * from "./hex-color.js";
+export * from "./id-param.js";
 export * from "./page-input.js";
 export * from "./size-input.js";
 export * from "./sort-order-agg.js";
