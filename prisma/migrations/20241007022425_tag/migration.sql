@@ -34,9 +34,6 @@ CREATE UNIQUE INDEX "TagCategory_name_key" ON "TagCategory"("name");
 CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TagCategory_priority_key" ON "TagCategory"("priority");
-
--- CreateIndex
 CREATE UNIQUE INDEX "_ChildTags_AB_unique" ON "_ChildTags"("A", "B");
 
 -- CreateIndex
