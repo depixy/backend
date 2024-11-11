@@ -11,23 +11,23 @@ import type { FastifyInstance } from "fastify";
 export function addGetRoute(app: FastifyInstance): void {
   app.get("/api/tag-category", {
     schema: {
-      summary: "List tag categories",
       description: createSwaggerDescription(
         "List tag categories",
         [["TagCategory", "search"]]
       ),
-      tags: [Tags.tagCategory],
       querystring: tagCategoryListInputSchema,
-      response: apiResponse(apiListSuccess(tagCategorySchema, true))
+      response: apiResponse(apiListSuccess(tagCategorySchema, true)),
+      summary: "List tag categories",
+      tags: [Tags.tagCategory]
     }
   }, async function (req, res) {
     await req.assertAbility("TagCategory", "search");
-    const { page = 1, size = 50, orderBy = [{ priority: "asc" }], where } = req.query;
+    const { orderBy = [{ priority: "asc" }], page = 1, size = 50, where } = req.query;
     const [data, totalCount] = await Promise.all([
-      this.db.tagCategory.findMany({ take: size, skip: (page - 1) * size, orderBy, where }),
+      this.db.tagCategory.findMany({ orderBy, skip: (page - 1) * size, take: size, where }),
       this.db.tagCategory.count({ where })
     ]);
     const totalPages = Math.ceil(totalCount / size);
-    await res.status(StatusCodes.ok).send({ success: true, data, pagination: { totalPages, page, size } });
+    await res.status(StatusCodes.ok).send({ data, pagination: { page, size, totalPages }, success: true });
   });
 }

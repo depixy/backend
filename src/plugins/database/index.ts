@@ -5,7 +5,7 @@ const name = "#plugins/database";
 
 interface DatabasePluginOptions {
   datasourceUrl: string;
-  logLevel: "debug" | "info" | "warn" | "error" | "silent";
+  logLevel: "debug" | "error" | "info" | "silent" | "warn";
 }
 
 export const databasePlugin = fp<DatabasePluginOptions>(
@@ -22,8 +22,8 @@ export const databasePlugin = fp<DatabasePluginOptions>(
     });
     if (logLevel === "debug") {
       db.$on("query", e => {
-        const { query, params, duration } = e;
-        app.log.debug({ query, params, duration });
+        const { duration, params, query } = e;
+        app.log.debug({ duration, params, query });
       });
     }
     if (["debug", "info"].includes(logLevel)) {
@@ -36,7 +36,7 @@ export const databasePlugin = fp<DatabasePluginOptions>(
         app.log.info(e.message);
       });
     }
-    if (["debug", "info", "warn", "error"].includes(logLevel)) {
+    if (["debug", "error", "info", "warn"].includes(logLevel)) {
       db.$on("error", e => {
         app.log.info(e.message);
       });
@@ -47,9 +47,9 @@ export const databasePlugin = fp<DatabasePluginOptions>(
     });
   },
   {
-    name,
+    decorators: {},
     fastify: "5.x",
-    decorators: {}
+    name
   }
 );
 

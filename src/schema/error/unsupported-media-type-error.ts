@@ -2,11 +2,11 @@ import { Type } from "@sinclair/typebox";
 import { uuidSchema } from "#schema/scalar";
 
 export const unsupportedMediaTypeErrorSchema = Type.Object({
-  success: Type.Const(false as const, { default: false }),
   code: Type.Const("UNSUPPORTED_MEDIA_TYPE" as const, { default: "UNSUPPORTED_MEDIA_TYPE" }),
   message: Type.String({ example: "Unsupported Media Type" }),
-  reqId: uuidSchema({ description: "Request id" })
+  reqId: uuidSchema({ description: "Request id" }),
+  success: Type.Const(false as const, { default: false })
 }, {
-  description: "Unsupported Media Type",
-  additionalProperties: false
+  additionalProperties: false,
+  description: "Unsupported Media Type"
 });

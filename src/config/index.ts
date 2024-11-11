@@ -16,8 +16,8 @@ export const schema = Type.Object({
   network,
   session
 }, {
-  $schema: "http://json-schema.org/draft-07/schema",
   $id: "https://raw.githubusercontent.com/depixy/backend/refs/heads/master/config/config.schema.json",
+  $schema: "http://json-schema.org/draft-07/schema",
   title: "Depixy Backend Configuration"
 });
 

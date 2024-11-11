@@ -5,12 +5,12 @@ export const dateTimeFilter = Type.Union([
   dateTimeSchema,
   Type.Recursive(thisType => Type.Object({
     equals: Type.Optional(Type.String()),
-    in: Type.Optional(Type.Array(dateTimeSchema)),
-    notIn: Type.Optional(Type.Array(dateTimeSchema)),
-    lt: Type.Optional(dateTimeSchema),
-    lte: Type.Optional(dateTimeSchema),
     gt: Type.Optional(dateTimeSchema),
     gte: Type.Optional(dateTimeSchema),
-    not: Type.Optional(thisType)
+    in: Type.Optional(Type.Array(dateTimeSchema)),
+    lt: Type.Optional(dateTimeSchema),
+    lte: Type.Optional(dateTimeSchema),
+    not: Type.Optional(thisType),
+    notIn: Type.Optional(Type.Array(dateTimeSchema))
   }))
 ]);

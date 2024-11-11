@@ -4,10 +4,10 @@ import { userLoginNameSchema } from "./user-login-name.js";
 import { userPasswordSchema } from "./user-password.js";
 
 export const refreshTokenCreateInputSchema = Type.Object({
+  description: refreshTokenDescriptionSchema,
   loginName: userLoginNameSchema,
-  password: userPasswordSchema,
-  description: refreshTokenDescriptionSchema
+  password: userPasswordSchema
 }, {
-  title: "Refresh Token Create Input",
-  additionalProperties: false
+  additionalProperties: false,
+  title: "Refresh Token Create Input"
 });

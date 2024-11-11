@@ -5,11 +5,11 @@ import { userLoginNameSchema } from "./user-login-name.js";
 import { userPasswordSchema } from "./user-password.js";
 
 export const userCreateInputSchema = Type.Object({
-  loginName: userLoginNameSchema,
   displayName: userDisplayNameSchema,
   email: emailSchema,
+  loginName: userLoginNameSchema,
   password: userPasswordSchema
 }, {
-  title: "User Create Input",
-  additionalProperties: false
+  additionalProperties: false,
+  title: "User Create Input"
 });

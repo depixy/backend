@@ -9,10 +9,10 @@ export const authPlugin = fp(
     addFunctions(app);
   },
   {
-    name,
-    fastify: "5.x",
+    decorators: { fastify: ["db"] },
     dependencies: [],
-    decorators: { fastify: ["db"] }
+    fastify: "5.x",
+    name
   }
 );
 

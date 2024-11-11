@@ -3,7 +3,7 @@ import { userSymbol } from "./user-symbol.js";
 import type { User } from "@prisma/client";
 import type { FastifyRequest } from "fastify";
 
-export async function getUser(this: FastifyRequest): Promise<User | null> {
+export async function getUser(this: FastifyRequest): Promise<null | User> {
   if (this[userSymbol]) {
     return this[userSymbol];
   }
@@ -14,8 +14,8 @@ export async function getUser(this: FastifyRequest): Promise<User | null> {
   const userToken = await this.server.db.userToken.findUnique({
     include: { user: true },
     where: {
-      id: userTokenId,
-      expiredAt: { gte: DateTime.utc().toJSDate() }
+      expiredAt: { gte: DateTime.utc().toJSDate() },
+      id: userTokenId
     }
   });
   if (!userToken) {

@@ -12,8 +12,8 @@ const level = Type.Union(
     Type.Const("silent" as const)
   ],
   {
-    title: "Log Level",
-    description: "See https://github.com/depixy/backend/blob/master/src/config/README.md"
+    description: "See https://github.com/depixy/backend/blob/master/src/config/README.md",
+    title: "Log Level"
   }
 );
 
@@ -47,12 +47,12 @@ const format = Type.Union(
 );
 
 export const logging = Type.Object({
-  level,
-  request,
   database,
-  format
+  format,
+  level,
+  request
 }, {
-  title: "Logging Configuration",
+  additionalProperties: false,
   description: "All logging related configuration",
-  additionalProperties: false
+  title: "Logging Configuration"
 });

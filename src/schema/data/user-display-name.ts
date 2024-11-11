@@ -1,7 +1,7 @@
 import { Type } from "@sinclair/typebox";
 
 export const userDisplayNameSchema = Type.String({
-  title: "Display Name",
+  maxLength: 32,
   minLength: 3,
-  maxLength: 32
+  title: "Display Name"
 });

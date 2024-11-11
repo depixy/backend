@@ -10,8 +10,8 @@ const schema = Type.Union(
     Type.Const("detail" as const)
   ],
   {
-    title: "Permission Action",
-    description: "Actions that is allowed to perform on subjects."
+    description: "Actions that is allowed to perform on subjects.",
+    title: "Permission Action"
   }
 );
 

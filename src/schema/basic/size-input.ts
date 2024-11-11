@@ -1,3 +1,3 @@
 import { Type } from "@sinclair/typebox";
 
-export const sizeInputSchema = Type.Number({ minimum: 1, maximum: 100, description: "Size per page" });
+export const sizeInputSchema = Type.Number({ description: "Size per page", maximum: 100, minimum: 1 });

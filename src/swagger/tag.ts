@@ -1,6 +1,6 @@
 export enum Tags {
-  user = "User",
+  authorization = "Authorization",
   system = "System",
   tagCategory = "Tag Category",
-  authorization = "Authorization"
+  user = "User"
 }

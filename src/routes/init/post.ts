@@ -7,11 +7,11 @@ import type { FastifyInstance } from "fastify";
 export function addPostRoute(app: FastifyInstance): void {
   app.post("/api/init", {
     schema: {
-      summary: "Initialization",
-      description: createSwaggerDescription("Initialize Depixy"),
-      tags: [Tags.system],
       body: userCreateInputSchema,
-      response: apiResponse(apiSuccess(userPrivateDetailSchema))
+      description: createSwaggerDescription("Initialize Depixy"),
+      response: apiResponse(apiSuccess(userPrivateDetailSchema)),
+      summary: "Initialization",
+      tags: [Tags.system]
     }
   }, async function (req, res) {
     const userCount = await this.db.user.count();
@@ -21,16 +21,16 @@ export function addPostRoute(app: FastifyInstance): void {
     const { password, ...data } = req.body;
     const passwordHash = await this.hashPassword(password);
     const user = await this.db.user.create({
-      include: {
-        tokens: true,
-        role: { include: { permissions: true } }
-      },
       data: {
         ...data,
         passwordHash,
         role: { connect: { name: "Admin" } }
+      },
+      include: {
+        role: { include: { permissions: true } },
+        tokens: true
       }
     });
-    await res.status(StatusCodes.ok).send({ success: true, data: user });
+    await res.status(StatusCodes.ok).send({ data: user, success: true });
   });
 }

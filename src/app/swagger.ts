@@ -21,19 +21,19 @@ const title = "Depixy API";
 export async function initSwagger(app: FastifyInstance): Promise<void> {
   await app.register(swaggerPlugin, {
     openapi: {
-      openapi: "3.0.0",
       info: {
-        title,
         description,
+        title,
         version: "1.0.0"
-      }
+      },
+      openapi: "3.0.0"
     }
   });
   await app.register(scalarPlugin, {
-    routePrefix: "/api",
     configuration: {
       defaultOpenAllTags: true,
       metaData: { title }
-    }
+    },
+    routePrefix: "/api"
   });
 }

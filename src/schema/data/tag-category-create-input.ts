@@ -3,10 +3,10 @@ import { hexColorSchema } from "#schema/basic";
 import { tagCategoryNameSchema } from "./tag-category-name.js";
 
 export const tagCategoryCreateInputSchema = Type.Object({
-  name: tagCategoryNameSchema,
   color: hexColorSchema,
+  name: tagCategoryNameSchema,
   priority: Type.Integer()
 }, {
-  title: "Tag Category Create Input",
-  additionalProperties: false
+  additionalProperties: false,
+  title: "Tag Category Create Input"
 });

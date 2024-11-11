@@ -5,10 +5,10 @@ import { tagCategoryNameSchema } from "./tag-category-name.js";
 import { tagSchema } from "./tag/entity.js";
 
 export const tagCategoryDetailSchema = Type.Object({
+  color: hexColorSchema,
+  createdAt: dateTimeSchema,
   id: uuidSchema(),
   name: tagCategoryNameSchema,
-  color: hexColorSchema,
   tags: Type.Array(tagSchema),
-  createdAt: dateTimeSchema,
   updatedAt: dateTimeSchema
 }, { additionalProperties: false });

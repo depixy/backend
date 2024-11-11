@@ -3,10 +3,10 @@ import { dateTimeSchema } from "#schema/scalar";
 import { refreshTokenDescriptionSchema } from "./refresh-token-description.js";
 
 export const refreshTokenSchema = Type.Object({
-  expiredAt: dateTimeSchema,
-  description: refreshTokenDescriptionSchema
+  description: refreshTokenDescriptionSchema,
+  expiredAt: dateTimeSchema
 }, {
-  title: "Refresh Token",
+  additionalProperties: false,
   description: "Refresh token is used to generate access token.",
-  additionalProperties: false
+  title: "Refresh Token"
 });

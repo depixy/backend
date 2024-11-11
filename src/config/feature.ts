@@ -1,7 +1,7 @@
 import { Type } from "@sinclair/typebox";
 
 export const feature = Type.Object({}, {
-  title: "Feature Configuration",
+  additionalProperties: false,
   description: "All features related configuration",
-  additionalProperties: false
+  title: "Feature Configuration"
 });

@@ -15,9 +15,9 @@ describe("Test auth routes", async () => {
 
   it("should POST /api/auth/native/refresh-token", async () => {
     const payload = {
+      description: "",
       loginName,
-      password,
-      description: ""
+      password
     };
     const res = await app.inject({ method: "POST", path: "/api/auth/native/refresh-token", payload });
     const json = await res.json();
@@ -29,9 +29,9 @@ describe("Test auth routes", async () => {
 
   it("should not POST /api/auth/native/refresh-token", async () => {
     const payload = {
+      description: "",
       loginName,
-      password: `${password}!`,
-      description: ""
+      password: `${password}!`
     };
     const res = await app.inject({ method: "POST", path: "/api/auth/native/refresh-token", payload });
     const json = await res.json();
@@ -41,9 +41,9 @@ describe("Test auth routes", async () => {
 
   it("should POST /api/auth/native/access-token", async () => {
     const res = await app.inject({
+      headers: { cookie: [`refreshSession=${refreshSession}`] },
       method: "POST",
-      path: "/api/auth/native/access-token",
-      headers: { cookie: [`refreshSession=${refreshSession}`] }
+      path: "/api/auth/native/access-token"
     });
     const json = await res.json();
     assert.equal(res.statusCode, 200);

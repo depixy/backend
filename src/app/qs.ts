@@ -10,6 +10,7 @@ export function parseQueryString(query: string): Record<string, unknown> {
     decoder(str, decoder, charset) {
       const strWithoutPlus = str.replace(/\+/ug, " ");
       if (charset === "iso-8859-1") {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         return strWithoutPlus.replace(/%[0-9a-f]{2}/ugi, unescape);
       }
 
@@ -18,7 +19,7 @@ export function parseQueryString(query: string): Record<string, unknown> {
         return parseFloat(str);
       }
 
-      const keywords = { true: true, false: false, null: null, undefined };
+      const keywords = { false: false, null: null, true: true, undefined };
       if (str in keywords) {
         const key = str as keyof typeof keywords;
         return keywords[key];

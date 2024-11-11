@@ -4,12 +4,12 @@ import { roleDetailSchema } from "./role-detail.js";
 import { userDisplayNameSchema } from "./user-display-name.js";
 
 export const userDetailSchema = Type.Object({
-  id: uuidSchema(),
-  displayName: userDisplayNameSchema,
   createdAt: dateTimeSchema,
-  updatedAt: dateTimeSchema,
-  role: roleDetailSchema
+  displayName: userDisplayNameSchema,
+  id: uuidSchema(),
+  role: roleDetailSchema,
+  updatedAt: dateTimeSchema
 }, {
-  title: "User Detail",
-  additionalProperties: false
+  additionalProperties: false,
+  title: "User Detail"
 });

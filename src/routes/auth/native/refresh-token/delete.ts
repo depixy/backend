@@ -7,14 +7,14 @@ import type { FastifyInstance } from "fastify";
 export function addDeleteRoute(app: FastifyInstance): void {
   app.delete("/api/auth/native/refresh-token", {
     schema: {
-      summary: "Delete refresh token",
+      body: refreshTokenDeleteInputSchema,
       description: createSwaggerDescription(
         "Refresh tokens can only be deleted by their owners.",
         [["UserToken", "delete"]]
       ),
-      tags: [Tags.authorization],
-      body: refreshTokenDeleteInputSchema,
-      response: apiResponse(apiSuccess(emptyObjectSchema))
+      response: apiResponse(apiSuccess(emptyObjectSchema)),
+      summary: "Delete refresh token",
+      tags: [Tags.authorization]
     }
   }, async function (req, res) {
     const user = await req.getUserOrThrow();
@@ -28,6 +28,6 @@ export function addDeleteRoute(app: FastifyInstance): void {
         ]
       }
     });
-    await res.status(StatusCodes.ok).send({ success: true, data: {} });
+    await res.status(StatusCodes.ok).send({ data: {}, success: true });
   });
 }

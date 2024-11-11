@@ -17,17 +17,17 @@ const responseSchema = apiSuccess(refreshTokenSchema);
 export function addPostRoute(app: FastifyInstance): void {
   app.post("/api/auth/native/refresh-token", {
     schema: {
-      summary: "Create refresh token",
+      body: bodySchema,
       description: createSwaggerDescription(
         "Create refresh token with access token. Refresh token is return in cookie.",
         [["UserToken", "create"]]
       ),
-      tags: [Tags.authorization],
-      body: bodySchema,
-      response: apiResponse(responseSchema)
+      response: apiResponse(responseSchema),
+      summary: "Create refresh token",
+      tags: [Tags.authorization]
     }
   }, async function (req, res) {
-    const { loginName, password, description = "" } = req.body;
+    const { description = "", loginName, password } = req.body;
     const user = await this.db.user.findUnique({ where: { loginName } });
     if (!user) {
       throw httpError(StatusCodes.forbidden, "Invalid loginName or password");
@@ -41,13 +41,13 @@ export function addPostRoute(app: FastifyInstance): void {
     await this.db.userToken.deleteMany({ where: { expiredAt: { lt: DateTime.utc().toJSDate() } } });
     const data = await this.db.userToken.create({
       data: {
-        userId: user.id,
         description,
-        expiredAt: DateTime.utc().plus({ seconds: this.config.session.expiry }).toJSDate()
+        expiredAt: DateTime.utc().plus({ seconds: this.config.session.expiry }).toJSDate(),
+        userId: user.id
       }
     });
     req.refreshSession.set("userTokenId", data.id);
     req.session.set("userTokenId", data.id);
-    await res.status(StatusCodes.ok).send({ success: true, data });
+    await res.status(StatusCodes.ok).send({ data, success: true });
   });
 }

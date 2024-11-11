@@ -6,7 +6,7 @@ export const idFilter = Type.Union([
   Type.Recursive(thisType => Type.Object({
     equals: Type.Optional(uuidSchema()),
     in: Type.Optional(Type.Array(uuidSchema())),
-    notIn: Type.Optional(Type.Array(uuidSchema())),
-    not: Type.Optional(thisType)
+    not: Type.Optional(thisType),
+    notIn: Type.Optional(Type.Array(uuidSchema()))
   }))
 ]);

@@ -2,7 +2,7 @@ import { Type } from "@sinclair/typebox";
 import { dateTimeSchema } from "#schema/scalar";
 
 export const accessTokenSchema = Type.Object({ expiredAt: dateTimeSchema }, {
-  title: "Access Token",
+  additionalProperties: false,
   description: "Access token is used to authenticate API.",
-  additionalProperties: false
+  title: "Access Token"
 });

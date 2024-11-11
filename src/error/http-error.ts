@@ -9,6 +9,7 @@ export const httpErrorMapping = {
   [StatusCodes.conflict]: { code: "CONFLICT", message: "Conflict" },
   [StatusCodes.continue]: { code: "CONTINUE", message: "Continue" },
   [StatusCodes.created]: { code: "CREATED", message: "Created" },
+  [StatusCodes.earlyHints]: { code: "EARLY_HINTS", message: "Early Hints" },
   [StatusCodes.expectationFailed]: { code: "EXPECTATION_FAILED", message: "Expectation Failed" },
   [StatusCodes.failedDependency]: { code: "FAILED_DEPENDENCY", message: "Failed Dependency" },
   [StatusCodes.forbidden]: { code: "FORBIDDEN", message: "Forbidden" },
@@ -23,10 +24,11 @@ export const httpErrorMapping = {
   [StatusCodes.locked]: { code: "LOCKED", message: "Locked" },
   [StatusCodes.methodFailure]: { code: "METHOD_FAILURE", message: "Method Failure" },
   [StatusCodes.methodNotAllowed]: { code: "METHOD_NOT_ALLOWED", message: "Method Not Allowed" },
+  [StatusCodes.misdirectedRequest]: { code: "MISDIRECTED_REQUEST", message: "Misdirected Request" },
   [StatusCodes.movedPermanently]: { code: "MOVED_PERMANENTLY", message: "Moved Permanently" },
   [StatusCodes.movedTemporarily]: { code: "MOVED_TEMPORARILY", message: "Moved Temporarily" },
-  [StatusCodes.multiStatus]: { code: "MULTI_STATUS", message: "Multi-Status" },
   [StatusCodes.multipleChoices]: { code: "MULTIPLE_CHOICES", message: "Multiple Choices" },
+  [StatusCodes.multiStatus]: { code: "MULTI_STATUS", message: "Multi-Status" },
   [StatusCodes.networkAuthenticationRequired]: { code: "NETWORK_AUTHENTICATION_REQUIRED", message: "Network Authentication Required" },
   [StatusCodes.noContent]: { code: "NO_CONTENT", message: "No Content" },
   [StatusCodes.nonAuthoritativeInformation]: { code: "NON_AUTHORITATIVE_INFORMATION", message: "Non Authoritative Information" },
@@ -41,14 +43,12 @@ export const httpErrorMapping = {
   [StatusCodes.preconditionFailed]: { code: "PRECONDITION_FAILED", message: "Precondition Failed" },
   [StatusCodes.preconditionRequired]: { code: "PRECONDITION_REQUIRED", message: "Precondition Required" },
   [StatusCodes.processing]: { code: "PROCESSING", message: "Processing" },
-  [StatusCodes.earlyHints]: { code: "EARLY_HINTS", message: "Early Hints" },
-  [StatusCodes.upgradeRequired]: { code: "UPGRADE_REQUIRED", message: "Upgrade Required" },
   [StatusCodes.proxyAuthenticationRequired]: { code: "PROXY_AUTHENTICATION_REQUIRED", message: "Proxy Authentication Required" },
+  [StatusCodes.requestedRangeNotSatisfiable]: { code: "REQUESTED_RANGE_NOT_SATISFIABLE", message: "Requested Range Not Satisfiable" },
   [StatusCodes.requestHeaderFieldsTooLarge]: { code: "REQUEST_HEADER_FIELDS_TOO_LARGE", message: "Request Header Fields Too Large" },
   [StatusCodes.requestTimeout]: { code: "REQUEST_TIMEOUT", message: "Request Timeout" },
   [StatusCodes.requestTooLong]: { code: "REQUEST_TOO_LONG", message: "Request Entity Too Large" },
   [StatusCodes.requestUriTooLong]: { code: "REQUEST_URI_TOO_LONG", message: "Request-URI Too Long" },
-  [StatusCodes.requestedRangeNotSatisfiable]: { code: "REQUESTED_RANGE_NOT_SATISFIABLE", message: "Requested Range Not Satisfiable" },
   [StatusCodes.resetContent]: { code: "RESET_CONTENT", message: "Reset Content" },
   [StatusCodes.seeOther]: { code: "SEE_OTHER", message: "See Other" },
   [StatusCodes.serviceUnavailable]: { code: "SERVICE_UNAVAILABLE", message: "Service Unavailable" },
@@ -59,8 +59,8 @@ export const httpErrorMapping = {
   [StatusCodes.unavailableForLegalReasons]: { code: "UNAVAILABLE_FOR_LEGAL_REASONS", message: "Unavailable For Legal Reasons" },
   [StatusCodes.unprocessableEntity]: { code: "UNPROCESSABLE_ENTITY", message: "Unprocessable Entity" },
   [StatusCodes.unsupportedMediaType]: { code: "UNSUPPORTED_MEDIA_TYPE", message: "Unsupported Media Type" },
-  [StatusCodes.useProxy]: { code: "USE_PROXY", message: "Use Proxy" },
-  [StatusCodes.misdirectedRequest]: { code: "MISDIRECTED_REQUEST", message: "Misdirected Request" }
+  [StatusCodes.upgradeRequired]: { code: "UPGRADE_REQUIRED", message: "Upgrade Required" },
+  [StatusCodes.useProxy]: { code: "USE_PROXY", message: "Use Proxy" }
 } as const;
 
 export function httpError(code = StatusCodes.internalServerError, message?: string): ApiError {

@@ -6,7 +6,7 @@ export * from "./scalar/index.js";
 
 declare module "fastify" {
   interface FastifyTypeProviderDefault {
-    validator: this["schema"] extends TSchema ? StaticDecode<this["schema"]> : unknown;
     serializer: this["schema"] extends TSchema ? StaticDecode<this["schema"]> : unknown;
+    validator: this["schema"] extends TSchema ? StaticDecode<this["schema"]> : unknown;
   }
 }

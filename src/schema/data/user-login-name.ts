@@ -1,8 +1,8 @@
 import { Type } from "@sinclair/typebox";
 
 export const userLoginNameSchema = Type.String({
-  title: "Login Name",
   description: "Login name of the user. It is private and unique.",
+  maxLength: 32,
   minLength: 3,
-  maxLength: 32
+  title: "Login Name"
 });

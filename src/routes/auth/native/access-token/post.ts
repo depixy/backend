@@ -7,17 +7,17 @@ import type { FastifyInstance } from "fastify";
 export function addPostRoute(app: FastifyInstance): void {
   app.post("/api/auth/native/access-token", {
     schema: {
-      summary: "Create access token",
       description: "Create access token with given credentials. Access token is return in cookie.",
-      tags: [Tags.authorization],
-      response: apiResponse(apiSuccess(accessTokenSchema))
+      response: apiResponse(apiSuccess(accessTokenSchema)),
+      summary: "Create access token",
+      tags: [Tags.authorization]
     }
   }, async (req, res) => {
     const refreshToken = req.refreshSession.get("userTokenId");
     req.session.set("userTokenId", refreshToken);
     await res.status(StatusCodes.ok).send({
-      success: true,
-      data: { expiredAt: DateTime.utc().plus({ seconds: 300 }).toJSDate() }
+      data: { expiredAt: DateTime.utc().plus({ seconds: 300 }).toJSDate() },
+      success: true
     });
   });
 }

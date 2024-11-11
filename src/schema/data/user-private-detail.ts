@@ -7,15 +7,15 @@ import { userDisplayNameSchema } from "./user-display-name.js";
 import { userLoginNameSchema } from "./user-login-name.js";
 
 export const userPrivateDetailSchema = Type.Object({
-  id: uuidSchema(),
-  loginName: userLoginNameSchema,
+  createdAt: dateTimeSchema,
   displayName: userDisplayNameSchema,
   email: emailSchema,
-  createdAt: dateTimeSchema,
-  updatedAt: dateTimeSchema,
+  id: uuidSchema(),
+  loginName: userLoginNameSchema,
   role: roleDetailSchema,
-  tokens: Type.Array(refreshTokenSchema)
+  tokens: Type.Array(refreshTokenSchema),
+  updatedAt: dateTimeSchema
 }, {
-  title: "User Private Detail",
-  additionalProperties: false
+  additionalProperties: false,
+  title: "User Private Detail"
 });

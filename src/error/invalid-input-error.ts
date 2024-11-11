@@ -3,32 +3,32 @@ import type { ValidationError as TypeboxValidationError } from "@joshuaavalon/fa
 import type { ValueErrorIterator } from "@sinclair/typebox/errors";
 
 export interface ValidationError {
+  message: string;
   path: string;
   value?: unknown;
-  message: string;
 }
 
 export class InvalidInputError extends ApiError {
   public constructor(fields: ValidationError[], message = "Invalid input") {
-    super({ status: 422, code: "INVALID_INPUT", message, fields });
+    super({ code: "INVALID_INPUT", fields, message, status: 422 });
   }
 
   public static id(): InvalidInputError {
-    return new InvalidInputError([{ path: "/id", message: "ID does not exist" }]);
+    return new InvalidInputError([{ message: "ID does not exist", path: "/id" }]);
   }
 
   public static version(): InvalidInputError {
     return new InvalidInputError([
-      { path: "/id", message: "ID may not exist" },
-      { path: "/version", message: "version may not match" }
+      { message: "ID may not exist", path: "/id" },
+      { message: "version may not match", path: "/version" }
     ]);
   }
 
   public static typebox(errors: ValueErrorIterator, message?: string): InvalidInputError {
-    return new InvalidInputError([...errors].map(f => ({ path: f.path, message: f.message })), message);
+    return new InvalidInputError([...errors].map(f => ({ message: f.message, path: f.path })), message);
   }
 
   public static validation(errors: TypeboxValidationError): InvalidInputError {
-    return new InvalidInputError(errors.fields.map(f => ({ path: f.path, message: f.message })));
+    return new InvalidInputError(errors.fields.map(f => ({ message: f.message, path: f.path })));
   }
 }

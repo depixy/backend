@@ -3,12 +3,12 @@ import { uuidSchema } from "#schema/scalar";
 import { permissionSchema } from "./permission.js";
 
 export const roleDetailSchema = Type.Object({
+  deletable: Type.Boolean(),
+  editable: Type.Boolean(),
   id: uuidSchema(),
   name: Type.String(),
-  editable: Type.Boolean(),
-  deletable: Type.Boolean(),
   permissions: Type.Array(permissionSchema)
 }, {
-  title: "Role Detail",
-  additionalProperties: false
+  additionalProperties: false,
+  title: "Role Detail"
 });

@@ -23,33 +23,33 @@ function genReqId(): string {
 
 export async function createApp(cfg: Config): Promise<FastifyInstance> {
   const app = await fastify({
+    disableRequestLogging: true,
+    genReqId,
     logger: {
       level: cfg.logging.level,
       redact: ["req.headers.authorization", "req.headers.cookie"],
       serializers: {
         req(request) {
           return {
-            method: request.method,
-            url: request.url,
             headers: request.headers,
             host: request.host,
+            method: request.method,
             remoteAddress: request.ip,
-            remotePort: request.socket.remotePort
+            remotePort: request.socket.remotePort,
+            url: request.url
           };
         }
       },
       transport: cfg.logging.format === "pretty"
         ? {
-          target: "pino-pretty",
-          options: { colorize: true }
+          options: { colorize: true },
+          target: "pino-pretty"
         }
         : undefined
     },
-    genReqId,
+    pluginTimeout: 120000,
     querystringParser: parseQueryString,
-    trustProxy: cfg.network.trustProxy,
-    disableRequestLogging: true,
-    pluginTimeout: 120000
+    trustProxy: cfg.network.trustProxy
   });
   app.setNotFoundHandler(notFoundHandler)
     .setErrorHandler(errorHandler)
@@ -69,29 +69,29 @@ export async function createApp(cfg: Config): Promise<FastifyInstance> {
   });
   await app.register(cookiePlugin);
   await app.register(sessionPlugin, [{
-    secret: cfg.session.secret,
-    salt: cfg.session.salt,
-    sessionName: "refreshSession",
+    cookie: {
+      httpOnly: true,
+      maxAge: cfg.session.expiry,
+      path: "/",
+      sameSite: "strict",
+      secure: "auto"
+    },
     expiry: cfg.session.expiry,
-    cookie: {
-      path: "/",
-      httpOnly: true,
-      sameSite: "strict",
-      secure: "auto",
-      maxAge: cfg.session.expiry
-    }
-  }, {
-    secret: cfg.session.secret,
     salt: cfg.session.salt,
-    sessionName: "session",
-    expiry: 300,
+    secret: cfg.session.secret,
+    sessionName: "refreshSession"
+  }, {
     cookie: {
-      path: "/",
       httpOnly: true,
+      maxAge: 300,
+      path: "/",
       sameSite: "strict",
-      secure: "auto",
-      maxAge: 300
-    }
+      secure: "auto"
+    },
+    expiry: 300,
+    salt: cfg.session.salt,
+    secret: cfg.session.secret,
+    sessionName: "session"
   }]);
   await app.register(authPlugin);
   await initSwagger(app);

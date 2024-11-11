@@ -1,5 +1,5 @@
 export interface ApiErrorOptions {
-  status: number;
+  [key: string]: unknown;
 
   /**
    * Unique error code per error
@@ -10,7 +10,7 @@ export interface ApiErrorOptions {
    * English error message
    */
   message: string;
-  [key: string]: unknown;
+  status: number;
 }
 
 export class ApiError extends Error {

@@ -43,7 +43,7 @@ declare module "fastify" {
   }
 
   interface FastifyRequest {
-    [userSymbol]?: User;
     [abilitySymbol]?: AppAbility;
+    [userSymbol]?: User;
   }
 }

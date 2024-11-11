@@ -9,8 +9,8 @@ const schema = Type.Union(
     Type.Const("Tag" as const)
   ],
   {
-    title: "Permission Subject",
-    description: "Subjects that is allowed to access."
+    description: "Subjects that is allowed to access.",
+    title: "Permission Subject"
   }
 );
 

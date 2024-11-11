@@ -12,14 +12,14 @@ function decorateIp(header: string) {
       }
       const ipHeader = this.headers[header];
       if (!ipHeader) {
-        this[ipSymbol] = this.socket?.remoteAddress ?? "";
+        this[ipSymbol] = this.socket.remoteAddress ?? "";
         return this[ipSymbol];
       }
       const ip = Array.isArray(ipHeader)
         ? ipHeader.find(ip => isIP(ip) !== 0)
         : isIP(ipHeader) !== 0 ? ipHeader : undefined;
       if (!ip) {
-        this[ipSymbol] = this.socket?.remoteAddress ?? "";
+        this[ipSymbol] = this.socket.remoteAddress ?? "";
         return this[ipSymbol];
       }
       this[ipSymbol] = ip;

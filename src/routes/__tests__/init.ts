@@ -13,10 +13,10 @@ describe("Test init routes", async () => {
 
   it("should POST /api/init", async () => {
     const payload = {
-      loginName,
       displayName: "test",
-      password,
-      email: "test@example.com"
+      email: "test@example.com",
+      loginName,
+      password
     };
     const res = await app.inject({ method: "POST", path: "/api/init", payload });
     const json = await res.json();
@@ -28,10 +28,10 @@ describe("Test init routes", async () => {
 
   it("should not POST /api/init after initialization", async () => {
     const payload = {
-      loginName,
       displayName: "test",
-      password,
-      email: "test@example.com"
+      email: "test@example.com",
+      loginName,
+      password
     };
     const res = await app.inject({ method: "POST", path: "/api/init", payload });
     const json = await res.json();

@@ -4,11 +4,11 @@ import { tagCategoryOrderBySchema } from "./tag-category-order-by.js";
 import { tagCategoryWhereSchema } from "./tag-category-where.js";
 
 export const tagCategoryListInputSchema = Type.Object({
+  orderBy: Type.Optional(Type.Array(tagCategoryOrderBySchema)),
   page: Type.Optional(pageInputSchema),
   size: Type.Optional(sizeInputSchema),
-  where: Type.Optional(tagCategoryWhereSchema),
-  orderBy: Type.Optional(Type.Array(tagCategoryOrderBySchema))
+  where: Type.Optional(tagCategoryWhereSchema)
 }, {
-  title: "Tag Category List Input",
-  additionalProperties: false
+  additionalProperties: false,
+  title: "Tag Category List Input"
 });

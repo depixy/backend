@@ -8,16 +8,16 @@ export const validationErrorSchema = Type.Object({
 }, { additionalProperties: false });
 
 export const invalidInputErrorSchema = Type.Object({
-  success: Type.Const(false as const, { default: false }),
   code: Type.Const("INVALID_INPUT" as const, { default: "INVALID_INPUT" }),
+  fields: Type.Array(validationErrorSchema),
   message: Type.String({ example: "Invalid input" }),
   reqId: Type.String({
     description: "Request id",
-    format: "uuid",
-    example: "00000000-0000-0000-0000-000000000000"
+    example: "00000000-0000-0000-0000-000000000000",
+    format: "uuid"
   }),
-  fields: Type.Array(validationErrorSchema)
+  success: Type.Const(false as const, { default: false })
 }, {
-  description: "Invalid input",
-  additionalProperties: false
+  additionalProperties: false,
+  description: "Invalid input"
 });

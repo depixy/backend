@@ -19,10 +19,11 @@ function sendApiError(res: FastifyReply, err: ApiError): void {
       res.log.warn({ err: err.toJson() }, err.message);
     }
   }
-  res.status(status).send({ success: false, reqId: res.request.id, ...err.toJson() });
+  res.status(status).send({ reqId: res.request.id, success: false, ...err.toJson() });
 }
 
-// eslint-disable-next-line max-params
+
+// eslint-disable-next-line @typescript-eslint/max-params
 export async function errorHandler(
   this: FastifyInstance,
   err: FastifyError,
@@ -47,8 +48,8 @@ export async function errorHandler(
       case "P2002": {
         if (err.meta && Array.isArray(err.meta.target)) {
           sendApiError(res, new InvalidInputError(err.meta.target.map(field => ({
-            path: `/${field}`,
-            message: "Not unique"
+            message: "Not unique",
+            path: `/${field}`
           }))));
         } else {
           sendApiError(res, new InvalidInputError([]));
@@ -58,7 +59,7 @@ export async function errorHandler(
       // case "P2003":
       //   res.status(StatusCodes.unprocessableEntity).send({ success: false, code: "FOREIGN_CONSTRAINT", message: "Related record(s) exists / not exist", reqId: req.id });
       case "P2025":
-        sendApiError(res, new InvalidInputError([{ path: "/", message: "Reference id(s) not found" }]));
+        sendApiError(res, new InvalidInputError([{ message: "Reference id(s) not found", path: "/" }]));
         return;
       default:
         // No action
@@ -66,24 +67,24 @@ export async function errorHandler(
   }
   if (err instanceof Prisma.PrismaClientUnknownRequestError) {
     if (err.message.includes("TAG_SELF_REF")) {
-      sendApiError(res, new InvalidInputError([{ path: "/", message: "Self reference tags are not allowed" }]));
+      sendApiError(res, new InvalidInputError([{ message: "Self reference tags are not allowed", path: "/" }]));
       return;
     }
     if (err.message.includes("TAG_PARENT_AND_CHILD_SAME")) {
-      sendApiError(res, new InvalidInputError([{ path: "/", message: "Same reference tags are not allowed" }]));
+      sendApiError(res, new InvalidInputError([{ message: "Same reference tags are not allowed", path: "/" }]));
       return;
     }
     if (err.message.includes("TAG_CIRCULAR_REF")) {
-      sendApiError(res, new InvalidInputError([{ path: "/", message: "Circular reference tags are not allowed" }]));
+      sendApiError(res, new InvalidInputError([{ message: "Circular reference tags are not allowed", path: "/" }]));
       return;
     }
   }
   let internalErr: ApiError;
   switch (err.code) {
-    case "FST_ERR_CTP_INVALID_MEDIA_TYPE":
+    case "FST_ERR_CTP_EMPTY_JSON_BODY":
       internalErr = httpError(StatusCodes.unsupportedMediaType);
       break;
-    case "FST_ERR_CTP_EMPTY_JSON_BODY":
+    case "FST_ERR_CTP_INVALID_MEDIA_TYPE":
       internalErr = httpError(StatusCodes.unsupportedMediaType);
       break;
     default:
@@ -104,5 +105,5 @@ export async function notFoundHandler(
 
 
 export function errorFormatter(errors: FastifySchemaValidationError[]): InvalidInputError {
-  return new InvalidInputError(errors.map(e => ({ path: e.instancePath, message: e.message ?? "Invalid input" })));
+  return new InvalidInputError(errors.map(e => ({ message: e.message ?? "Invalid input", path: e.instancePath })));
 }

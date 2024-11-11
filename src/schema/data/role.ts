@@ -2,11 +2,11 @@ import { Type } from "@sinclair/typebox";
 import { uuidSchema } from "#schema/scalar";
 
 export const roleSchema = Type.Object({
-  id: uuidSchema(),
-  name: Type.String(),
+  deletable: Type.Boolean(),
   editable: Type.Boolean(),
-  deletable: Type.Boolean()
+  id: uuidSchema(),
+  name: Type.String()
 }, {
-  title: "Role",
-  additionalProperties: false
+  additionalProperties: false,
+  title: "Role"
 });

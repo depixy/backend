@@ -3,11 +3,11 @@ import { dateTimeSchema, uuidSchema } from "#schema/scalar";
 import { userDisplayNameSchema } from "./user-display-name.js";
 
 export const userSchema = Type.Object({
-  id: uuidSchema(),
-  displayName: userDisplayNameSchema,
   createdAt: dateTimeSchema,
+  displayName: userDisplayNameSchema,
+  id: uuidSchema(),
   updatedAt: dateTimeSchema
 }, {
-  title: "User",
-  additionalProperties: false
+  additionalProperties: false,
+  title: "User"
 });
