@@ -1,14 +1,12 @@
 import { Type } from "@sinclair/typebox";
-import { dateTimeFilter, idFilter, intFilter, stringFilter } from "#schema/filter";
+import { dateTimeFilter, idFilter, stringFilter } from "#schema/filter";
 
-export const tagCategoryWhereSchema = Type.Recursive(thisType => Type.Object({
+export const tagWhereSchema = Type.Recursive(thisType => Type.Object({
   AND: Type.Optional(Type.Array(thisType)),
-  color: Type.Optional(stringFilter),
   createdAt: Type.Optional(dateTimeFilter),
   id: Type.Optional(idFilter),
   name: Type.Optional(stringFilter),
   NOT: Type.Optional(Type.Array(thisType)),
   OR: Type.Optional(Type.Array(thisType)),
-  priority: Type.Optional(intFilter),
   updatedAt: Type.Optional(dateTimeFilter)
 }), { additionalProperties: false });

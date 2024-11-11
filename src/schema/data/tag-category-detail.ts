@@ -2,7 +2,7 @@ import { Type } from "@sinclair/typebox";
 import { hexColorSchema } from "#schema/basic";
 import { dateTimeSchema, uuidSchema } from "#schema/scalar";
 import { tagCategoryNameSchema } from "./tag-category-name.js";
-import { tagSchema } from "./tag/entity.js";
+import { tagSchema } from "./tag.js";
 
 export const tagCategoryDetailSchema = Type.Object({
   color: hexColorSchema,
