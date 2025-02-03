@@ -1,18 +1,21 @@
 import { randomUUID } from "node:crypto";
 import cookiePlugin from "@fastify/cookie";
 import sessionPlugin from "@fastify/secure-session";
-import typeboxPlugin from "@joshuaavalon/fastify-plugin-typebox";
 import fastify from "fastify";
 import { authPlugin } from "#plugins/auth";
-import { databasePlugin } from "#plugins/database";
+import databasePlugin from "#plugins/database";
+import networkPlugin from "#plugins/network";
+import swaggerPlugin from "#plugins/swagger";
+import typeboxPlugin from "#plugins/typebox";
 import { addRoutes } from "#routes";
 import { errorFormatter, errorHandler, notFoundHandler } from "./error.js";
-import { addCustomIpParsing } from "./ip.js";
-import { parseQueryString } from "./qs.js";
-import { initSwagger } from "./swagger.js";
 import type { Session } from "@fastify/secure-session";
 import type { FastifyInstance } from "fastify";
 import type { Config } from "#config";
+
+const swaggerDescription = `
+Swagger for Depixy API
+`;
 
 /**
  * Generate unique request id
@@ -48,25 +51,18 @@ export async function createApp(cfg: Config): Promise<FastifyInstance> {
         : undefined
     },
     pluginTimeout: 120000,
-    querystringParser: parseQueryString,
     trustProxy: cfg.network.trustProxy
   });
   app.setNotFoundHandler(notFoundHandler)
     .setErrorHandler(errorHandler)
     .setSchemaErrorFormatter(errorFormatter);
   app.decorate("config", cfg);
-  addCustomIpParsing(app, {
-    header: cfg.network.ipHeader,
-    trustProxy: cfg.network.trustProxy
-  });
   app.addHook("onRequest", async req => {
     req.log.info({ req }, "incoming request");
   });
+  await app.register(networkPlugin, cfg.network);
+  await app.register(databasePlugin, cfg.database);
   await app.register(typeboxPlugin);
-  await app.register(databasePlugin, {
-    datasourceUrl: cfg.database.url,
-    logLevel: cfg.logging.database
-  });
   await app.register(cookiePlugin);
   await app.register(sessionPlugin, [{
     cookie: {
@@ -94,7 +90,11 @@ export async function createApp(cfg: Config): Promise<FastifyInstance> {
     sessionName: "session"
   }]);
   await app.register(authPlugin);
-  await initSwagger(app);
+  await app.register(swaggerPlugin, {
+    description: swaggerDescription,
+    title: "Depixy API",
+    version: "1.0.0"
+  });
   addRoutes(app);
   return app;
 }

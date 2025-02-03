@@ -1,18 +1,32 @@
 import { PrismaClient } from "@prisma/client";
 import fp from "fastify-plugin";
+import type { Bindings } from "pino";
 
-const name = "#plugins/database";
 
-interface DatabasePluginOptions {
-  datasourceUrl: string;
-  logLevel: "debug" | "error" | "info" | "silent" | "warn";
+export interface DatabasePluginOptions {
+
+  /**
+   * Log bindings for all logs emitted by this plugin.
+   * Use boolean to enable or disable log bindings.
+   * @defaultValue { plugin: {@link name} }
+   */
+  logBindings?: Bindings | false;
+
+  /**
+   * Database connection string.
+   * @defaultValue `url` in generated client.
+   */
+  url?: string;
 }
 
-export const databasePlugin = fp<DatabasePluginOptions>(
+export const name = "#plugin/database";
+
+
+export default fp<DatabasePluginOptions>(
   async (app, opts) => {
-    const { datasourceUrl, logLevel } = opts;
+    const { logBindings = { plugin: name }, url } = opts;
     const db = new PrismaClient({
-      datasourceUrl,
+      datasourceUrl: url,
       log: [
         { emit: "event", level: "query" },
         { emit: "event", level: "info" },
@@ -20,27 +34,28 @@ export const databasePlugin = fp<DatabasePluginOptions>(
         { emit: "event", level: "error" }
       ]
     });
-    if (logLevel === "debug") {
-      db.$on("query", e => {
-        const { duration, params, query } = e;
-        app.log.debug({ duration, params, query });
-      });
-    }
-    if (["debug", "info"].includes(logLevel)) {
-      db.$on("info", e => {
-        app.log.info(e.message);
-      });
-    }
-    if (["debug", "info", "warn"].includes(logLevel)) {
-      db.$on("warn", e => {
-        app.log.info(e.message);
-      });
-    }
-    if (["debug", "error", "info", "warn"].includes(logLevel)) {
-      db.$on("error", e => {
-        app.log.info(e.message);
-      });
-    }
+    const logger = logBindings ? app.log.child(logBindings) : app.log;
+
+    db.$on("query", event => {
+      const { duration, params, query, target } = event;
+      logger.debug({ duration, params, target }, query);
+    });
+
+    db.$on("info", event => {
+      const { message, target } = event;
+      logger.info({ target }, message);
+    });
+
+    db.$on("warn", event => {
+      const { message, target } = event;
+      logger.warn({ target }, message);
+    });
+
+    db.$on("error", event => {
+      const { message, target } = event;
+      logger.error({ target }, message);
+    });
+
     app.decorate("db", db);
     app.addHook("onClose", async app => {
       await app.db.$disconnect();
@@ -48,6 +63,7 @@ export const databasePlugin = fp<DatabasePluginOptions>(
   },
   {
     decorators: {},
+    dependencies: [],
     fastify: "5.x",
     name
   }

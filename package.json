@@ -65,13 +65,12 @@
     }
   },
   "devDependencies": {
-    "@joshuaavalon/eslint-config-typescript": "^9.0.2",
+    "@joshuaavalon/eslint-config-typescript": "^9.2.1",
     "@types/chai": "^4.3.14",
     "@types/config": "^3.3.5",
     "@types/luxon": "^3.4.2",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.28",
-    "@types/qs": "^6.9.16",
     "@types/set-cookie-parser": "^2.4.10",
     "@types/sodium-native": "^2.3.9",
     "chai": "^5.1.0",
@@ -80,7 +79,7 @@
     "eslint": "^9.14.0",
     "globals": "^15.8.0",
     "mocha": "^10.4.0",
-    "prisma": "^5.20.0",
+    "prisma": "^6.2.1",
     "rimraf": "^6.0.1",
     "set-cookie-parser": "^2.7.0",
     "typescript": "^5.4.2"
@@ -91,8 +90,7 @@
     "@fastify/multipart": "^9.0.1",
     "@fastify/secure-session": "^8.1.0",
     "@fastify/swagger": "^9.0.0",
-    "@joshuaavalon/fastify-plugin-typebox": "^2.0.0",
-    "@prisma/client": "^5.20.0",
+    "@prisma/client": "^6.2.1",
     "@scalar/fastify-api-reference": "^1.25.25",
     "@sinclair/typebox": "^0.33.12",
     "argon2": "^0.41.1",
@@ -102,7 +100,6 @@
     "js-yaml": "^4.1.0",
     "luxon": "^3.5.0",
     "pino-pretty": "^11.2.2",
-    "qs": "^6.13.0",
     "sodium-native": "^4.2.0"
   }
 }
