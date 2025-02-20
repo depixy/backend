@@ -2,7 +2,7 @@ import { Type } from "@sinclair/typebox";
 
 export const database = Type.Object({
   url: Type.String({
-    description: "Example: postgresql://depixy:depixy@db:5432/depixy",
+    description: "Example: file:./dev.db",
     title: "Database connection string"
   })
 }, {

@@ -3,7 +3,7 @@ import fastify from "fastify";
 import plugin from "../index.js";
 import type { FastifyInstance } from "fastify";
 
-describe("Test #plugin/network", () => {
+describe("Test #plugins/network", () => {
   let app: FastifyInstance;
 
   before(async () => {

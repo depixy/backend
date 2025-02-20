@@ -1,14 +1,13 @@
-import { httpError } from "#error";
+import { HttpError } from "#plugins/error";
 import { apiResponse, apiSuccess, userCreateInputSchema, userPrivateDetailSchema } from "#schema";
 import { Tags } from "#swagger";
-import { createSwaggerDescription, StatusCodes } from "#utils";
 import type { FastifyInstance } from "fastify";
 
 export function addPostRoute(app: FastifyInstance): void {
   app.post("/api/init", {
     schema: {
       body: userCreateInputSchema,
-      description: createSwaggerDescription("Initialize Depixy"),
+      description: "Initialize Depixy",
       response: apiResponse(apiSuccess(userPrivateDetailSchema)),
       summary: "Initialization",
       tags: [Tags.system]
@@ -16,21 +15,18 @@ export function addPostRoute(app: FastifyInstance): void {
   }, async function (req, res) {
     const userCount = await this.db.user.count();
     if (userCount > 0) {
-      throw httpError(StatusCodes.badRequest, "Already initialization");
+      throw HttpError.badRequest({ message: "Already initialization" });
     }
     const { password, ...data } = req.body;
-    const passwordHash = await this.hashPassword(password);
+    const passwordHash = await this.password.hash(password);
     const user = await this.db.user.create({
       data: {
         ...data,
         passwordHash,
-        role: { connect: { name: "Admin" } }
+        role: "admin"
       },
-      include: {
-        role: { include: { permissions: true } },
-        tokens: true
-      }
+      include: { tokens: true }
     });
-    await res.status(StatusCodes.ok).send({ data: user, success: true });
+    await res.status(200).send({ data: user, success: true });
   });
 }

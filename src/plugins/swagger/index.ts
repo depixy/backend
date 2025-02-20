@@ -3,7 +3,7 @@ import scalarPlugin from "@scalar/fastify-api-reference";
 import fp from "fastify-plugin";
 import type { Bindings } from "pino";
 
-const name = "#plugin/swagger";
+const name = "#plugins/swagger";
 
 export type SwaggerPluginOptions = {
   /**

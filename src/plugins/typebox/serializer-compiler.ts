@@ -1,6 +1,6 @@
 import { TransformEncode } from "@sinclair/typebox/value";
 import { Value } from "@sinclair/typebox/value";
-import { ValidationError } from "./error.js";
+import { ValidationError } from "./errors/index.js";
 import type { TSchema } from "@sinclair/typebox";
 import type { FastifyBaseLogger, FastifyInstance } from "fastify";
 import type { FastifySerializerCompiler } from "fastify/types/schema.js";

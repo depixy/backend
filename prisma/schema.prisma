@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -9,7 +9,7 @@ generator client {
 }
 
 model User {
-  id           String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id           String      @id @default(uuid())
   loginName    String      @unique
   displayName  String
   passwordHash Bytes
@@ -17,39 +17,19 @@ model User {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @default(now()) @updatedAt
   tokens       UserToken[]
-  role         Role        @relation(fields: [roleId], references: [id])
-  roleId       String      @db.Uuid
+  role         String
 }
 
 model UserToken {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id          String   @id @default(uuid())
   description String
   expiredAt   DateTime
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String   @db.Uuid
-}
-
-model Role {
-  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String       @unique
-  editable    Boolean
-  deletable   Boolean
-  permissions Permission[]
-  users       User[]
-}
-
-model Permission {
-  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  subject String
-  action  String
-  Role    Role   @relation(fields: [roleId], references: [id])
-  roleId  String @db.Uuid
-
-  @@unique([roleId, subject, action])
+  userId      String
 }
 
 model TagCategory {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String   @id @default(uuid())
   name      String   @unique
   priority  Int
   color     String
@@ -59,10 +39,10 @@ model TagCategory {
 }
 
 model Tag {
-  id         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String      @id @default(uuid())
   name       String      @unique
   category   TagCategory @relation(fields: [categoryId], references: [id])
-  categoryId String      @db.Uuid
+  categoryId String
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @default(now()) @updatedAt
   parentTags Tag[]       @relation("ChildTags")

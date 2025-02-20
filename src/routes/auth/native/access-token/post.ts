@@ -1,7 +1,6 @@
 import { DateTime } from "luxon";
 import { accessTokenSchema, apiResponse, apiSuccess } from "#schema";
 import { Tags } from "#swagger";
-import { StatusCodes } from "#utils";
 import type { FastifyInstance } from "fastify";
 
 export function addPostRoute(app: FastifyInstance): void {
@@ -13,10 +12,9 @@ export function addPostRoute(app: FastifyInstance): void {
       tags: [Tags.authorization]
     }
   }, async (req, res) => {
-    const refreshToken = req.refreshSession.get("userTokenId");
-    req.session.set("userTokenId", refreshToken);
-    await res.status(StatusCodes.ok).send({
-      data: { expiredAt: DateTime.utc().plus({ seconds: 300 }).toJSDate() },
+    req.auth.setAccessToken();
+    await res.status(200).send({
+      data: { expiredAt: DateTime.utc().plus({ minutes: 5 }).toJSDate() },
       success: true
     });
   });

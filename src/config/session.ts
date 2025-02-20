@@ -2,7 +2,7 @@ import { Type } from "@sinclair/typebox";
 import sodium from "sodium-native";
 
 export const session = Type.Object({
-  expiry: Type.Number({ description: "Number of second for the session to be expired", minimum: 600 }),
+  expiry: Type.Number({ description: "Number of days for the session to be expired", minimum: 1 }),
   salt: Type.String({ maxLength: sodium.crypto_pwhash_SALTBYTES, minLength: sodium.crypto_pwhash_SALTBYTES }),
   secret: Type.String({ minLength: 32 })
 }, {

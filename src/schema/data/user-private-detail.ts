@@ -2,7 +2,6 @@ import { Type } from "@sinclair/typebox";
 import { emailSchema } from "#schema/scalar";
 import { dateTimeSchema, uuidSchema } from "#schema/scalar";
 import { refreshTokenSchema } from "./refresh-token.js";
-import { roleDetailSchema } from "./role-detail.js";
 import { userDisplayNameSchema } from "./user-display-name.js";
 import { userLoginNameSchema } from "./user-login-name.js";
 
@@ -12,7 +11,7 @@ export const userPrivateDetailSchema = Type.Object({
   email: emailSchema,
   id: uuidSchema(),
   loginName: userLoginNameSchema,
-  role: roleDetailSchema,
+  role: Type.String(),
   tokens: Type.Array(refreshTokenSchema),
   updatedAt: dateTimeSchema
 }, {

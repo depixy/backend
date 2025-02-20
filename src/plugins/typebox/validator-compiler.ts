@@ -1,5 +1,5 @@
 import { Value } from "@sinclair/typebox/value";
-import { ValidationError } from "./error.js";
+import { ValidationError } from "./errors/index.js";
 import type { TSchema } from "@sinclair/typebox";
 import type { FastifyBaseLogger } from "fastify";
 import type { FastifyInstance, FastifySchemaCompiler } from "fastify";

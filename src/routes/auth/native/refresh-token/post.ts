@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { httpError } from "#error";
+import { HttpError } from "#plugins/error";
 import {
   apiResponse,
   apiSuccess,
@@ -7,7 +7,6 @@ import {
   refreshTokenSchema
 } from "#schema";
 import { Tags } from "#swagger";
-import { createSwaggerDescription, StatusCodes } from "#utils";
 import type { FastifyInstance } from "fastify";
 
 const bodySchema = refreshTokenCreateInputSchema;
@@ -18,10 +17,7 @@ export function addPostRoute(app: FastifyInstance): void {
   app.post("/api/auth/native/refresh-token", {
     schema: {
       body: bodySchema,
-      description: createSwaggerDescription(
-        "Create refresh token with access token. Refresh token is return in cookie.",
-        [["UserToken", "create"]]
-      ),
+      description: "Create refresh token with access token. Refresh token is return in cookie.",
       response: apiResponse(responseSchema),
       summary: "Create refresh token",
       tags: [Tags.authorization]
@@ -30,24 +26,15 @@ export function addPostRoute(app: FastifyInstance): void {
     const { description = "", loginName, password } = req.body;
     const user = await this.db.user.findUnique({ where: { loginName } });
     if (!user) {
-      throw httpError(StatusCodes.forbidden, "Invalid loginName or password");
+      throw HttpError.forbidden({ message: "Invalid loginName or password" });
     }
-    const isPasswordValid = await this.verifyPassword(user.passwordHash, password);
+    const isPasswordValid = await this.password.verify(Buffer.from(user.passwordHash), password);
     if (!isPasswordValid) {
-      throw httpError(StatusCodes.forbidden, "Invalid loginName or password");
+      throw HttpError.forbidden({ message: "Invalid loginName or password" });
     }
-    req.setUser(user);
-    await req.assertAbility("UserToken", "create");
+    await req.auth.can("create", "UserToken");
     await this.db.userToken.deleteMany({ where: { expiredAt: { lt: DateTime.utc().toJSDate() } } });
-    const data = await this.db.userToken.create({
-      data: {
-        description,
-        expiredAt: DateTime.utc().plus({ seconds: this.config.session.expiry }).toJSDate(),
-        userId: user.id
-      }
-    });
-    req.refreshSession.set("userTokenId", data.id);
-    req.session.set("userTokenId", data.id);
-    await res.status(StatusCodes.ok).send({ data, success: true });
+    const data = await req.auth.authenticate(user, { description });
+    await res.status(200).send({ data, success: true });
   });
 }

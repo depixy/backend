@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import fp from "fastify-plugin";
+import { errorFormatter } from "./error-formatter.js";
 import type { Bindings } from "pino";
 
 
@@ -19,7 +20,7 @@ export interface DatabasePluginOptions {
   url?: string;
 }
 
-export const name = "#plugin/database";
+export const name = "#plugins/database";
 
 
 export default fp<DatabasePluginOptions>(
@@ -60,10 +61,10 @@ export default fp<DatabasePluginOptions>(
     app.addHook("onClose", async app => {
       await app.db.$disconnect();
     });
+    app.addErrorFormatter(errorFormatter);
   },
   {
-    decorators: {},
-    dependencies: [],
+    dependencies: ["#plugins/error", "#plugins/typebox"],
     fastify: "5.x",
     name
   }

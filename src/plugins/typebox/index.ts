@@ -1,10 +1,11 @@
 import fp from "fastify-plugin";
+import { schemaErrorFormatter } from "./schema-error-formatter.js";
 import { serializerCompilerFactory } from "./serializer-compiler.js";
 import { validatorCompilerFactory } from "./validator-compiler.js";
 import type { StaticDecode, TSchema } from "@sinclair/typebox";
 import type { Bindings } from "pino";
 
-const name = "#plugin/typebox";
+const name = "#plugins/typebox";
 
 export type TypeboxPluginOptions = {
 
@@ -35,15 +36,16 @@ export default fp<TypeboxPluginOptions>(
     const logger = logBindings ? app.log.child(logBindings) : app.log;
     app.setValidatorCompiler(validatorCompilerFactory({ logger, references, useDefault }));
     app.setSerializerCompiler(serializerCompilerFactory({ logger, references, useDefault }));
+    app.setSchemaErrorFormatter(schemaErrorFormatter);
   },
   {
-    dependencies: [],
+    dependencies: ["#plugins/error"],
     fastify: "5.x",
     name
   }
 );
 
-export * from "./error.js";
+export * from "./errors/index.js";
 
 declare module "fastify" {
   interface FastifyTypeProviderDefault {

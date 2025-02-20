@@ -1,12 +1,13 @@
 import { Type } from "@sinclair/typebox";
 import { TypeCompiler } from "@sinclair/typebox/compiler";
 import config from "config";
-import { InvalidInputError } from "#error";
+import { ValidationError } from "#plugins/typebox";
 import { database } from "./database.js";
 import { feature } from "./feature.js";
 import { logging } from "./logging.js";
 import { network } from "./network.js";
 import { session } from "./session.js";
+import { storage } from "./storage.js";
 import type { Static } from "@sinclair/typebox";
 
 export const schema = Type.Object({
@@ -14,7 +15,8 @@ export const schema = Type.Object({
   feature,
   logging,
   network,
-  session
+  session,
+  storage
 }, {
   $id: "https://raw.githubusercontent.com/depixy/backend/refs/heads/master/config/config.schema.json",
   $schema: "http://json-schema.org/draft-07/schema",
@@ -28,7 +30,7 @@ export async function readConfig(): Promise<Config> {
   const cfg = JSON.parse(JSON.stringify(config, null, 2));
   if (!validator.Check(cfg)) {
     const nodeConfigEnv = config.util.getEnv("NODE_CONFIG_ENV");
-    throw InvalidInputError.typebox(validator.Errors(cfg), `Invalid configuration (${nodeConfigEnv})`);
+    throw ValidationError.typebox(validator.Errors(cfg), `Invalid configuration (${nodeConfigEnv})`);
   }
   return cfg;
 }

@@ -1,42 +1,40 @@
-import { LocalStorage } from "./local/index.js";
-import { S3Storage } from "./s3/index.js";
-import type { FastifyBaseLogger } from "fastify";
-import type { LocalStorageOptions } from "./local/index.js";
-import type { S3StorageOptions } from "./s3/index.js";
-import type { Storage } from "./type.js";
+import fp from "fastify-plugin";
+import { createFastifyStorage } from "./storage/index.js";
+import type { Bindings } from "pino";
+import type { CreateStorageOptions, FastifyStorage } from "./storage/index.js";
 
-export type * from "./type.js";
-export type StorageOptions =
-  | ({ type: "local" } & LocalStorageOptions)
-  | ({ type: "s3" } & S3StorageOptions);
+export type { CreateStorageOptions, FastifyStorage, Storage, StorageOptions } from "./storage/index.js";
 
+export type StoragePluginOptions = {
 
-export interface FastifyStorage {
-}
+  /*
+   * Log bindings for all logs emitted by this plugin.
+   * Use boolean to enable or disable log bindings.
+   * @defaultValue { plugin: {@link name} }
+   */
+  logBindings?: Bindings | false;
 
-type KeyOfType<T, V> = keyof { [ P in keyof T as T[P] extends V ? P : never ]: P };
-type FastifyStorageName = KeyOfType<FastifyStorage, Storage>;
+  storage: CreateStorageOptions;
+};
 
-export type CreateStorageOptions = Record<FastifyStorageName, StorageOptions>;
+export const name = "#plugins/storage";
 
-function createStorage(opts: StorageOptions, logger: FastifyBaseLogger): Storage {
-  const { type } = opts;
-  switch (type) {
-    case "local":
-      return new LocalStorage({ ...opts, logger });
-    case "s3":
-      return new S3Storage({ ...opts, logger });
-    default:
-      throw new Error(`Unknown storage type (${type})`);
+export default fp<StoragePluginOptions>(
+  async (app, opts) => {
+    const { logBindings = { plugin: name }, storage } = opts;
+    const logger = logBindings ? app.log.child(logBindings) : app.log;
+    app.decorate("storage", createFastifyStorage(storage, logger));
+  },
+  {
+    decorators: {},
+    dependencies: [],
+    fastify: "5.x",
+    name
   }
-}
+);
 
-export function createFastifyStorage(opts: CreateStorageOptions, logger: FastifyBaseLogger): FastifyStorage {
-  const storage: Partial<FastifyStorage> = {};
-  for (const [key, storageOpts] of Object.entries<StorageOptions>(opts)) {
-    const name = key as FastifyStorageName;
-    logger.info({ name, type: storageOpts.type }, "Initialize storage");
-    storage[name] = createStorage(storageOpts, logger);
+declare module "fastify" {
+  interface FastifyInstance {
+    storage: FastifyStorage;
   }
-  return storage as FastifyStorage;
 }
