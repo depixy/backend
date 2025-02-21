@@ -26,22 +26,8 @@ jobs:
         node-version:
           - lts/*
           - latest
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_DB: depixy
-          POSTGRES_USER: depixy
-          POSTGRES_PASSWORD: depixy
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
     env:
-      DATABASE_URL: postgresql://depixy:depixy@localhost:5432/depixy
+      DATABASE_URL: file:./dev.db
     steps:
       - name: Setup minio
         run: |

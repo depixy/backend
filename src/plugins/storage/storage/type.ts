@@ -8,7 +8,7 @@ export interface Storage {
 }
 
 export interface StorageInput {
-  body: Buffer | Readable | string | Uint8Array;
+  body: Buffer | Readable | Uint8Array | string;
   contentType?: string;
 }
 
