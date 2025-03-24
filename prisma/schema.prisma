@@ -10,22 +10,26 @@ generator client {
 
 model User {
   id           String      @id @default(uuid())
-  loginName    String      @unique
-  displayName  String
-  passwordHash Bytes
+  loginName    String      @unique @map("login_name")
+  displayName  String      @map("display_name")
+  passwordHash Bytes       @map("password_hash")
   email        String      @unique
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @default(now()) @updatedAt
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @default(now()) @updatedAt @map("updated_at")
   tokens       UserToken[]
   role         String
+
+  @@map("user")
 }
 
 model UserToken {
   id          String   @id @default(uuid())
   description String
-  expiredAt   DateTime
+  expiredAt   DateTime @map("expired_at")
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
+  userId      String   @map("user_id")
+
+  @@map("user_token")
 }
 
 model TagCategory {
@@ -34,17 +38,21 @@ model TagCategory {
   priority  Int
   color     String
   tags      Tag[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("tag_category")
 }
 
 model Tag {
   id         String      @id @default(uuid())
   name       String      @unique
   category   TagCategory @relation(fields: [categoryId], references: [id])
-  categoryId String
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @default(now()) @updatedAt
-  parentTags Tag[]       @relation("ChildTags")
-  childTags  Tag[]       @relation("ChildTags")
+  categoryId String      @map("category_id")
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @default(now()) @updatedAt @map("updated_at")
+  parentTags Tag[]       @relation("child_tags")
+  childTags  Tag[]       @relation("child_tags")
+
+  @@map("tag")
 }

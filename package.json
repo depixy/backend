@@ -13,7 +13,7 @@
     "export:json-schema": "node dist/config/export.js",
     "test": "cross-env NODE_OPTIONS=--enable-source-maps mocha",
     "lint": "eslint",
-    "db:dev": "prisma migrate dev --name temp",
+    "db:dev": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:generate": "prisma generate --no-hints",
     "db:studio": "prisma studio",
