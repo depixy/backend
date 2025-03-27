@@ -5,6 +5,7 @@ import type { FastifyInstance } from "fastify";
 
 export function addIdRoute(app: FastifyInstance): void {
   app.get("/api/tag-category/:id", {
+    ability: { can: [["read", "TagCategory"]] },
     schema: {
       description: "Get tag category detail",
       params: idParamSchema,
@@ -13,7 +14,7 @@ export function addIdRoute(app: FastifyInstance): void {
       tags: [Tags.tagCategory]
     }
   }, async function (req, res) {
-    const ability = await req.auth.getAbility();
+    const ability = await req.getAbility();
     const { id } = req.params;
     const data = await this.db.tagCategory.findUnique({
       include: { tags: true },

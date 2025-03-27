@@ -54,6 +54,12 @@ CREATE UNIQUE INDEX "user_login_name_key" ON "user"("login_name");
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- CreateIndex
+CREATE INDEX "user_token_user_id_idx" ON "user_token"("user_id");
+
+-- CreateIndex
+CREATE INDEX "user_token_expired_at_idx" ON "user_token"("expired_at" ASC);
+
+-- CreateIndex
 CREATE UNIQUE INDEX "tag_category_name_key" ON "tag_category"("name");
 
 -- CreateIndex

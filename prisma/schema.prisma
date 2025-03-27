@@ -29,6 +29,8 @@ model UserToken {
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String   @map("user_id")
 
+  @@index([userId])
+  @@index([expiredAt(sort: Asc)])
   @@map("user_token")
 }
 

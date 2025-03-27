@@ -1,31 +1,15 @@
 import { ForbiddenError } from "@casl/ability";
 import fp from "fastify-plugin";
 import { HttpError } from "#plugins/error";
-import { addAuthContext } from "./auth-context/index.js";
-import { initPasswordHandler } from "./password-handler/index.js";
-import type { RefreshSessionData, Session } from "@fastify/secure-session";
-import type { FastifyInstance } from "fastify";
-import type { DateTime } from "luxon";
+import { addDeclarations } from "./declarations/index.js";
+import { addHooks } from "./hooks/index.js";
+import { routes } from "./routes/index.js";
 import type { Bindings } from "pino";
-import type { AuthContext, AuthContextOptions, AuthUser } from "./auth-context/index.js";
-import type { PasswordAlgorithm, PasswordHandler } from "./password-handler/index.js";
-
-export type { AuthContextConfig } from "./auth-context/index.js";
-export * from "./auth-context/index.js";
 
 const name = "@joshuaavalon/fastify-plugin-auth";
 
-export type RefreshTokenOptions = {
-
-  /**
-   * Generate a refresh token.
-   * It should be persisted in database.
-   */
-  generate: (app: FastifyInstance, user: AuthUser, expiredAt: DateTime<true> | null) => Promise<string>;
-};
-
 export type AuthPluginOptions = {
-  authContext: AuthContextOptions;
+  defaultExpiryDays: number;
 
   /**
    * Log bindings for all logs emitted by this plugin.
@@ -33,15 +17,15 @@ export type AuthPluginOptions = {
    * @defaultValue { plugin: {@link name} }
    */
   logBindings?: Bindings | false;
-  passwordAlgorithm?: PasswordAlgorithm;
 };
 
 export default fp<AuthPluginOptions>(
   async (app, opts) => {
-    const { authContext, logBindings = { plugin: name }, passwordAlgorithm = "Argon2" } = opts;
+    const { defaultExpiryDays, logBindings = { plugin: name } } = opts;
     const logger = logBindings ? app.log.child(logBindings) : app.log;
-    addAuthContext(app, { authContext, logger });
-    await initPasswordHandler(app, passwordAlgorithm);
+    addDeclarations(app);
+    addHooks(app);
+    await app.register(routes, { defaultExpiryDays, logger, prefix: "/api/auth" });
     app.addErrorFormatter(async err => {
       if (!(err instanceof ForbiddenError)) {
         return null;
@@ -56,23 +40,8 @@ export default fp<AuthPluginOptions>(
   }
 );
 
-declare module "fastify" {
-  interface FastifyRequest {
-    readonly auth: AuthContext;
-    refreshSession: Session<RefreshSessionData>;
-  }
-
-  interface FastifyInstance {
-    password: PasswordHandler;
-  }
-}
-
 declare module "@fastify/secure-session" {
   interface SessionData {
-    userToken?: string;
-  }
-
-  interface RefreshSessionData {
     userToken?: string;
   }
 }

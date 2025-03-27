@@ -10,6 +10,7 @@ import type { FastifyInstance } from "fastify";
 
 export function addGetRoute(app: FastifyInstance): void {
   app.get("/api/tag-category", {
+    ability: { can: [["read", "TagCategory"]] },
     schema: {
       description: "List tag categories",
       querystring: tagCategoryListInputSchema,
@@ -18,7 +19,7 @@ export function addGetRoute(app: FastifyInstance): void {
       tags: [Tags.tagCategory]
     }
   }, async function (req, res) {
-    const ability = await req.auth.getAbility();
+    const ability = await req.getAbility();
     const { orderBy = [{ priority: "asc" }], page = 1, size = 50, where = {} } = req.query;
     const [data, totalCount] = await Promise.all([
       this.db.tagCategory.findMany({

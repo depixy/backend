@@ -9,6 +9,7 @@ import type { FastifyInstance } from "fastify";
 
 export function addPostRoute(app: FastifyInstance): void {
   app.post("/api/user/register", {
+    ability: { can: [["create", "User"]] },
     schema: {
       body: userCreateInputSchema,
       description: "Create new user with `User` role.",
@@ -17,7 +18,6 @@ export function addPostRoute(app: FastifyInstance): void {
       tags: [Tags.user]
     }
   }, async function (req, res) {
-    await req.auth.can("create", "User");
     const { password, ...data } = req.body;
     const passwordHash = await this.password.hash(password);
     const user = await this.db.user.create({
