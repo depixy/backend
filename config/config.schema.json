@@ -189,7 +189,7 @@
       "title": "Storage Configuration",
       "type": "object",
       "properties": {
-        "image": {
+        "file": {
           "anyOf": [
             {
               "type": "object",
@@ -247,7 +247,7 @@
         }
       },
       "required": [
-        "image"
+        "file"
       ]
     }
   },

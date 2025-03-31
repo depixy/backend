@@ -13,7 +13,7 @@ const localStorage = Type.Object({
   type: Type.Const("local" as const)
 });
 
-export const storage = Type.Object({ image: Type.Union([s3Storage, localStorage]) }, {
+export const storage = Type.Object({ file: Type.Union([s3Storage, localStorage]) }, {
   additionalProperties: false,
   description: "All storage related configuration",
   title: "Storage Configuration"

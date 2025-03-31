@@ -12,7 +12,7 @@ export type StorageOptions =
 
 
 export interface FastifyStorage {
-  image: Storage;
+  file: Storage;
 }
 
 type KeyOfType<T, V> = keyof { [ P in keyof T as T[P] extends V ? P : never ]: P };

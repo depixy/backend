@@ -7,7 +7,6 @@ import type { Config } from "#config";
 
 export async function initAuthPlugin(app: FastifyInstance, cfg: Config): Promise<void> {
   await app.register(cookiePlugin);
-  Duration.fromObject({ days: cfg.session.expiry });
   const sessionExpiry = Duration.fromObject({ days: 30 });
   const sessionExpiryTime = sessionExpiry.as("seconds");
   await app.register(sessionPlugin, [{

@@ -30,9 +30,6 @@
   },
   "homepage": "https://github.com/depixy/backend#readme",
   "imports": {
-    "#ability": {
-      "import": "./dist/ability/index.js"
-    },
     "#app": {
       "import": "./dist/app/index.js"
     },

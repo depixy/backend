@@ -4,28 +4,19 @@ import { HttpError } from "#plugins/error";
 import { addDeclarations } from "./declarations/index.js";
 import { addHooks } from "./hooks/index.js";
 import { routes } from "./routes/index.js";
-import type { Bindings } from "pino";
 
 const name = "@joshuaavalon/fastify-plugin-auth";
 
 export type AuthPluginOptions = {
   defaultExpiryDays: number;
-
-  /**
-   * Log bindings for all logs emitted by this plugin.
-   * Use boolean to enable or disable log bindings.
-   * @defaultValue { plugin: {@link name} }
-   */
-  logBindings?: Bindings | false;
 };
 
 export default fp<AuthPluginOptions>(
   async (app, opts) => {
-    const { defaultExpiryDays, logBindings = { plugin: name } } = opts;
-    const logger = logBindings ? app.log.child(logBindings) : app.log;
+    const { defaultExpiryDays } = opts;
     addDeclarations(app);
     addHooks(app);
-    await app.register(routes, { defaultExpiryDays, logger, prefix: "/api/auth" });
+    await app.register(routes, { defaultExpiryDays, prefix: "/api/auth" });
     app.addErrorFormatter(async err => {
       if (!(err instanceof ForbiddenError)) {
         return null;
@@ -34,7 +25,7 @@ export default fp<AuthPluginOptions>(
     });
   },
   {
-    dependencies: ["#plugins/error", "@fastify/cookie", "@fastify/secure-session"],
+    dependencies: ["#plugins/database", "#plugins/error", "@fastify/cookie", "@fastify/secure-session"],
     fastify: "5.x",
     name
   }

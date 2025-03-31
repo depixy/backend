@@ -15,3 +15,7 @@ session:
   # Access token expiry (days)
   expiry: 30
 feature: {}
+storage:
+  file:
+    type: local
+    baseDir: ./data

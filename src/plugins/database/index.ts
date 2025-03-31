@@ -1,18 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import fp from "fastify-plugin";
 import { errorFormatter } from "./error-formatter.js";
-import type { Bindings } from "pino";
 
 
 export interface DatabasePluginOptions {
-
-  /**
-   * Log bindings for all logs emitted by this plugin.
-   * Use boolean to enable or disable log bindings.
-   * @defaultValue { plugin: {@link name} }
-   */
-  logBindings?: Bindings | false;
-
   /**
    * Database connection string.
    * @defaultValue `url` in generated client.
@@ -25,7 +16,7 @@ export const name = "#plugins/database";
 
 export default fp<DatabasePluginOptions>(
   async (app, opts) => {
-    const { logBindings = { plugin: name }, url } = opts;
+    const { url } = opts;
     const db = new PrismaClient({
       datasourceUrl: url,
       log: [
@@ -35,26 +26,25 @@ export default fp<DatabasePluginOptions>(
         { emit: "event", level: "error" }
       ]
     });
-    const logger = logBindings ? app.log.child(logBindings) : app.log;
 
     db.$on("query", event => {
       const { duration, params, query, target } = event;
-      logger.debug({ duration, params, target }, query);
+      app.log.debug({ duration, params, target }, query);
     });
 
     db.$on("info", event => {
       const { message, target } = event;
-      logger.info({ target }, message);
+      app.log.info({ target }, message);
     });
 
     db.$on("warn", event => {
       const { message, target } = event;
-      logger.warn({ target }, message);
+      app.log.warn({ target }, message);
     });
 
     db.$on("error", event => {
       const { message, target } = event;
-      logger.error({ target }, message);
+      app.log.error({ target }, message);
     });
 
     app.decorate("db", db);

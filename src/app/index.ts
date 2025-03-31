@@ -65,6 +65,7 @@ export async function createApp(cfg: Config): Promise<FastifyInstance> {
   await initAuthPlugin(app, cfg);
   await app.register(swaggerPlugin, {
     description: swaggerDescription,
+    routePrefix: "/api",
     title: "Depixy API",
     version: "1.0.0"
   });
