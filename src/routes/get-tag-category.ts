@@ -3,14 +3,14 @@ import { apiResponse, apiSuccess, idParamSchema, tagCategoryDetailSchema } from 
 import { Tags } from "#swagger";
 import type { FastifyInstance } from "fastify";
 
-export function addIdRoute(app: FastifyInstance): void {
+export function addGetTagCategoryRoute(app: FastifyInstance): void {
   app.get("/api/tag-category/:id", {
     ability: { can: [["read", "TagCategory"]] },
     schema: {
-      description: "Get tag category detail",
+      description: "Get tag category",
       params: idParamSchema,
       response: apiResponse(apiSuccess(tagCategoryDetailSchema, true)),
-      summary: "Get tag category detail",
+      summary: "Get tag category",
       tags: [Tags.tagCategory]
     }
   }, async function (req, res) {

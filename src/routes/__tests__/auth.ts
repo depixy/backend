@@ -1,12 +1,11 @@
 import { assert } from "chai";
 import { createApp } from "#app";
 import { readConfig } from "#config";
-import { loginName, password } from "./constant.js";
+import { loginName, password, testContext } from "./constant.js";
 import type { FastifyInstance } from "fastify";
 
 describe("Test auth routes", async () => {
   let app: FastifyInstance;
-  let cookie = "";
 
   before(async () => {
     const cfg = await readConfig();
@@ -23,7 +22,7 @@ describe("Test auth routes", async () => {
     const json = await res.json();
     assert.equal(res.statusCode, 200);
     assert.equal(json.success, true);
-    cookie = (Array.isArray(res.headers["set-cookie"]) ? res.headers["set-cookie"][0] : res.headers["set-cookie"]) ?? "";
+    testContext.cookie = (Array.isArray(res.headers["set-cookie"]) ? res.headers["set-cookie"][0] : res.headers["set-cookie"]) ?? "";
   });
 
   it("should not POST /api/auth/login", async () => {
@@ -40,7 +39,7 @@ describe("Test auth routes", async () => {
 
   it("should POST /api/auth/logout", async () => {
     const res = await app.inject({
-      headers: { cookie },
+      headers: { cookie: testContext.cookie },
       method: "POST",
       path: "/api/auth/logout",
       payload: {}

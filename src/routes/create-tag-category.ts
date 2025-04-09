@@ -2,7 +2,7 @@ import { apiResponse, apiSuccess, tagCategoryCreateInputSchema, tagCategoryDetai
 import { Tags } from "#swagger";
 import type { FastifyInstance } from "fastify";
 
-export function addPostRoute(app: FastifyInstance): void {
+export function addCreateTagCategoryRoute(app: FastifyInstance): void {
   app.post("/api/tag-category", {
     ability: { can: [["create", "TagCategory"]] },
     schema: {

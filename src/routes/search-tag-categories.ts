@@ -2,17 +2,17 @@ import { accessibleBy } from "@casl/prisma";
 import {
   apiListSuccess,
   apiResponse,
-  tagCategoryListInputSchema,
-  tagCategorySchema
+  tagCategorySchema,
+  tagCategorySearchInputSchema
 } from "#schema";
 import { Tags } from "#swagger";
 import type { FastifyInstance } from "fastify";
 
-export function addSearchRoute(app: FastifyInstance): void {
+export function addSearchTagCategoriesRoute(app: FastifyInstance): void {
   app.post("/api/tag-category/search", {
     ability: { can: [["read", "TagCategory"]] },
     schema: {
-      body: tagCategoryListInputSchema,
+      body: tagCategorySearchInputSchema,
       description: "Search tag categories",
       response: apiResponse(apiListSuccess(tagCategorySchema, true)),
       summary: "Search tag categories",
