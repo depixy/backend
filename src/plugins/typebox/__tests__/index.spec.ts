@@ -51,6 +51,6 @@ describe("Test @joshuaavalon/fastify-plugin-typebox", () => {
 
   it("should not work", async () => {
     const res = await app.inject({ method: "post", path: "/", payload: { a: 1 } });
-    assert.equal(res.statusCode, 400);
+    assert.equal(res.statusCode, 422);
   });
 });

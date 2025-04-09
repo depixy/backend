@@ -42,7 +42,8 @@ describe("Test auth routes", async () => {
     const res = await app.inject({
       headers: { cookie },
       method: "POST",
-      path: "/api/auth/logout"
+      path: "/api/auth/logout",
+      payload: {}
     });
     const json = await res.json();
     assert.equal(res.statusCode, 200);
