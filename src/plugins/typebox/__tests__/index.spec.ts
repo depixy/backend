@@ -1,6 +1,8 @@
 import { Type } from "@sinclair/typebox";
 import { assert } from "chai";
 import fastify from "fastify";
+import basePlugin from "#plugins/base";
+import errorPlugin from "#plugins/error";
 import plugin from "../index.js";
 
 import type { FastifyInstance } from "fastify";
@@ -10,6 +12,8 @@ describe("Test @joshuaavalon/fastify-plugin-typebox", () => {
 
   before(async () => {
     app = await fastify();
+    await app.register(basePlugin);
+    await app.register(errorPlugin);
     await app.register(plugin);
     app.post(
       "/",
