@@ -21,7 +21,7 @@ export default fp<AuthPluginOptions>(
       if (!(err instanceof ForbiddenError)) {
         return null;
       }
-      return HttpError.forbidden({ cause: err });
+      return HttpError.unauthorized({ cause: err, message: err.message });
     });
   },
   {

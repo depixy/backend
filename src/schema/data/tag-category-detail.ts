@@ -9,6 +9,7 @@ export const tagCategoryDetailSchema = Type.Object({
   createdAt: dateTimeSchema,
   id: uuidSchema(),
   name: tagCategoryNameSchema,
+  priority: Type.Integer(),
   tags: Type.Array(tagSchema),
   updatedAt: dateTimeSchema
 }, { additionalProperties: false });

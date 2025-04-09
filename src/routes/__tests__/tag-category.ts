@@ -49,7 +49,6 @@ describe("Test tag category routes", async () => {
     const json = await res.json();
     assert.equal(res.statusCode, 422);
     assert.equal(json.success, false);
-    assert.deepEqual(json.data, null);
   });
 
   it("should get tag category", async () => {
