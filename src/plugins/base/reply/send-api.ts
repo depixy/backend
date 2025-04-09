@@ -10,6 +10,7 @@ export type FailureApiReply = {
   code: string;
   data?: unknown;
   message: string;
+  reqId: string;
   success: false;
 };
 

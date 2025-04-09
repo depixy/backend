@@ -30,13 +30,13 @@ export class ErrorHandler {
     return this.handleApiError(HttpError.internalServerError({ cause: err }), req, res);
   }
 
-  private async handleApiError(err: ApiError, _req: FastifyRequest, res: FastifyReply): Promise<void> {
+  private async handleApiError(err: ApiError, req: FastifyRequest, res: FastifyReply): Promise<void> {
     if (err.status >= 500) {
       res.log.error({ err }, err.message);
     } else {
       res.log.warn({ err }, err.message);
     }
     const { code, data, message, status } = err;
-    await res.status(status).sendApi({ code, data, message, success: false });
+    await res.status(status).sendApi({ code, data, message, reqId: req.id, success: false });
   }
 }

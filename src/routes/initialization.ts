@@ -3,7 +3,7 @@ import { apiResponse, apiSuccess, userCreateInputSchema, userPrivateDetailSchema
 import { Tags } from "#swagger";
 import type { FastifyInstance } from "fastify";
 
-export function addPostRoute(app: FastifyInstance): void {
+export function addInitializationRoute(app: FastifyInstance): void {
   app.post("/api/init", {
     schema: {
       body: userCreateInputSchema,

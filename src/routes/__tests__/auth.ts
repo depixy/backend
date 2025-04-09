@@ -1,5 +1,4 @@
 import { assert } from "chai";
-import parseSetCookie from "set-cookie-parser";
 import { createApp } from "#app";
 import { readConfig } from "#config";
 import { loginName, password } from "./constant.js";
@@ -7,43 +6,43 @@ import type { FastifyInstance } from "fastify";
 
 describe("Test auth routes", async () => {
   let app: FastifyInstance;
-  let refreshSession = "";
+  let cookie = "";
+
   before(async () => {
     const cfg = await readConfig();
     app = await createApp(cfg);
   });
 
-  it("should POST /api/auth/native/refresh-token", async () => {
+  it("should POST /api/auth/login", async () => {
     const payload = {
       description: "",
       loginName,
       password
     };
-    const res = await app.inject({ method: "POST", path: "/api/auth/native/refresh-token", payload });
+    const res = await app.inject({ method: "POST", path: "/api/auth/login", payload });
     const json = await res.json();
     assert.equal(res.statusCode, 200);
     assert.equal(json.success, true);
-    const cookies = parseSetCookie(res.headers["set-cookie"] ?? [], { map: true });
-    refreshSession = cookies.refreshSession?.value ?? "";
+    cookie = (Array.isArray(res.headers["set-cookie"]) ? res.headers["set-cookie"][0] : res.headers["set-cookie"]) ?? "";
   });
 
-  it("should not POST /api/auth/native/refresh-token", async () => {
+  it("should not POST /api/auth/login", async () => {
     const payload = {
       description: "",
       loginName,
       password: `${password}!`
     };
-    const res = await app.inject({ method: "POST", path: "/api/auth/native/refresh-token", payload });
+    const res = await app.inject({ method: "POST", path: "/api/auth/login", payload });
     const json = await res.json();
     assert.equal(res.statusCode, 403);
     assert.equal(json.success, false);
   });
 
-  it("should POST /api/auth/native/access-token", async () => {
+  it("should POST /api/auth/logout", async () => {
     const res = await app.inject({
-      headers: { cookie: [`refreshSession=${refreshSession}`] },
+      headers: { cookie },
       method: "POST",
-      path: "/api/auth/native/access-token"
+      path: "/api/auth/logout"
     });
     const json = await res.json();
     assert.equal(res.statusCode, 200);

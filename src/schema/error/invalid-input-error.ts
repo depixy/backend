@@ -9,7 +9,10 @@ export const validationErrorSchema = Type.Object({
 
 export const invalidInputErrorSchema = Type.Object({
   code: Type.Const("INVALID_INPUT" as const, { default: "INVALID_INPUT" }),
-  fields: Type.Array(validationErrorSchema),
+  data: Type.Object(
+    { fieldErrors: Type.Array(validationErrorSchema) },
+    { additionalProperties: false }
+  ),
   message: Type.String({ example: "Invalid input" }),
   reqId: Type.String({
     description: "Request id",

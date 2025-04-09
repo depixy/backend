@@ -1,8 +1,7 @@
 import { Type } from "@sinclair/typebox";
 import { DateTime } from "luxon";
-import { userLoginNameSchema, userPasswordSchema } from "#plugins/auth/schemas";
 import { HttpError } from "#plugins/error";
-import { apiResponse, apiSuccess, dateTimeSchema } from "#schema";
+import { apiResponse, apiSuccess, dateTimeSchema, userLoginNameSchema, userPasswordSchema } from "#schema";
 import { Tags } from "#swagger";
 import type { FastifyInstance } from "fastify";
 

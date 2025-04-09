@@ -62,13 +62,13 @@ export async function createApp(cfg: Config): Promise<FastifyInstance> {
   await app.register(storagePlugin, { storage: cfg.storage });
   await app.register(networkPlugin, cfg.network);
   await app.register(databasePlugin, cfg.database);
-  await initAuthPlugin(app, cfg);
   await app.register(swaggerPlugin, {
     description: swaggerDescription,
     routePrefix: "/api",
     title: "Depixy API",
     version: "1.0.0"
   });
+  await initAuthPlugin(app, cfg);
   addRoutes(app);
   return app;
 }
