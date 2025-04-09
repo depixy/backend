@@ -7,12 +7,12 @@ import {
 import { Tags } from "#swagger";
 import type { FastifyInstance } from "fastify";
 
-export function addPostRoute(app: FastifyInstance): void {
-  app.post("/api/user/register", {
+export function addRegisterUserRoute(app: FastifyInstance): void {
+  app.post("/api/user", {
     ability: { can: [["create", "User"]] },
     schema: {
       body: userCreateInputSchema,
-      description: "Create new user with `User` role.",
+      description: "Create new user with `user` role.",
       response: apiResponse(apiSuccess(userPrivateDetailSchema)),
       summary: "Register new user",
       tags: [Tags.user]

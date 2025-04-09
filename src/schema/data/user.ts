@@ -6,6 +6,7 @@ export const userSchema = Type.Object({
   createdAt: dateTimeSchema,
   displayName: userDisplayNameSchema,
   id: uuidSchema(),
+  role: Type.String(),
   updatedAt: dateTimeSchema
 }, {
   additionalProperties: false,
